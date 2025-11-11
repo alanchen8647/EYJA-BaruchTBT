@@ -6,6 +6,10 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
+  fetch("/api/test-get")
+    .then(response => response.json())
+    .then(data => console.log(data));
+
   return (
     <>
       <div>
