@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./App.css";
-import Accordion from "react-bootstrap/Accordion";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Textbooks from "../images/textbooks.jpg";
 import Textbooks1 from "../images/textbooks1.jpg";
