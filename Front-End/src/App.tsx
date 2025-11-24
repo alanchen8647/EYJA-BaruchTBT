@@ -4,6 +4,7 @@ import "./App.css";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import SellPage from "./SellPage.tsx";
+import DiscussionPage from "./DiscussionPage.tsx";
 import Textbooks1 from "../images/textbooks1.jpg";
 import Mathtextbook from "../images/math-textbook.jpg";
 
@@ -49,9 +50,9 @@ function App() {
                 </li>
 
                 <li className="nav-item">
-                  <a className="nav-link active" href="#">
+                  <Link className="nav-link active" to="/Discussion">
                     Discussion/Community
-                  </a>
+                  </Link>
                 </li>
 
               </ul>
@@ -118,6 +119,7 @@ function App() {
         } />
 
         <Route path="/sell" element={<SellPage />} />
+        <Route path="/Discussion" element={<DiscussionPage />} />
       </Routes>
     </BrowserRouter>
   );
