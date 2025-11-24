@@ -6,6 +6,7 @@ import CartPage from "./CartPage.tsx";
 import SellPage from "./SellPage.tsx";
 import DiscussionPage from "./DiscussionPage.tsx";
 import TextbookInfoPage from "./TextbookInfoPage.tsx";
+import CommentPage from "./CommentPage.tsx";
 import Textbooks1 from "../images/textbooks1.jpg";
 import Mathtextbook from "../images/math-textbook.jpg";
 
@@ -18,12 +19,29 @@ type Textbook = {
   price: string;
   image: string;
   contact: string;
-  description: string;   // ✅ NEW
+  description: string;
+};
+
+// Comments keyed by discussion title
+type CommentsByPost = {
+  [title: string]: string[];
 };
 
 function App() {
   const [textbooks, setTextbooks] = useState<Textbook[]>([]);
   const [cartItems, setCartItems] = useState<Textbook[]>([]);
+
+  const [commentsByPost, setCommentsByPost] = useState<CommentsByPost>({
+    // Seed comments for the art history topic
+    "Best textbook for studying art history?": [
+      `I love seeing a person getting interested in art history! A good textbook that I 
+recommend is "Gardner's Art Through the Ages by Helen Gardner". This book does a great 
+job at describing different art forms and eras of art throughout history.`,
+      `I hear that "Art: A Brief History by Marilyn Stokstad" is a pretty good textbook for 
+getting a rough idea of art throughout history. You can probably find it on this site at 
+a decent price.`,
+    ],
+  });
 
   const addTextbook = (newBook: Textbook) => {
     setTextbooks((prev) => [...prev, newBook]);
@@ -53,6 +71,13 @@ function App() {
     setCartItems([]);
   };
 
+  const addComment = (postTitle: string, comment: string) => {
+    setCommentsByPost((prev) => ({
+      ...prev,
+      [postTitle]: [...(prev[postTitle] || []), comment],
+    }));
+  };
+
   const staticTextbook: Textbook = {
     title: "Calculus by Ron Larson and Bruce Edwards",
     subject: "Math",
@@ -61,7 +86,8 @@ function App() {
     price: "$60.00",
     image: Mathtextbook,
     contact: "",
-    description: "This book is a good refresher for important calculus concepts for a beginner-intermediate course. I mostly used the texbook for practice problems, so I barely touched it. The condition is used, but the actual condition is near pristine.",     // ✅ static book has empty description
+    description:
+      "This book is a good refresher for important calculus concepts for a beginner-intermediate course. I mostly used the textbook for practice problems, so I barely touched it. The condition is used, but the actual condition is near pristine.",
   };
 
   return (
@@ -130,7 +156,7 @@ function App() {
       </header>
 
       <Routes>
-        {/* HOME PAGE */}
+        {/* HOME PAGE (unchanged) */}
         <Route
           path="/"
           element={
@@ -254,6 +280,17 @@ function App() {
         <Route
           path="/TextbookInfo"
           element={<TextbookInfoPage addToCart={addToCart} />}
+        />
+
+        {/* NEW: Comment page for discussion topics */}
+        <Route
+          path="/Comment"
+          element={
+            <CommentPage
+              commentsByPost={commentsByPost}
+              addComment={addComment}
+            />
+          }
         />
       </Routes>
     </BrowserRouter>
