@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import CartPage from "./CartPage.tsx";
 import SellPage from "./SellPage.tsx";
 import DiscussionPage from "./DiscussionPage.tsx";
+import TextbookInfoPage from "./TextbookInfoPage.tsx";
 import Textbooks1 from "../images/textbooks1.jpg";
 import Mathtextbook from "../images/math-textbook.jpg";
 
@@ -48,8 +49,8 @@ function App() {
   );
 
   const clearCart = () => {
-  setCartItems([]);
-};
+    setCartItems([]);
+  };
 
   const staticTextbook: Textbook = {
     title: "Calculus by Ron Larson and Bruce Edwards",
@@ -165,9 +166,13 @@ function App() {
                           Price: $60.00
                         </p>
                         <div>
-                          <a href="#" className="btn btn-primary mb-3">
+                          <Link
+                            to="/TextbookInfo"
+                            state={{ book: staticTextbook }}
+                            className="btn btn-primary mb-3"
+                          >
                             More information
-                          </a>
+                          </Link>
                         </div>
                         <div>
                           <button
@@ -193,28 +198,23 @@ function App() {
                         />
                         <div className="card-body">
                           <h5 className="card-title">{book.title}</h5>
-                          <p
-                            className="card-text"
-                            style={{ fontSize: "19px" }}
-                          >
+                          <p className="card-text" style={{ fontSize: "19px" }}>
                             Course Number: {book.course}
                           </p>
-                          <p
-                            className="card-text"
-                            style={{ fontSize: "19px" }}
-                          >
+                          <p className="card-text" style={{ fontSize: "19px" }}>
                             Condition: {book.condition}
                           </p>
-                          <p
-                            className="card-text"
-                            style={{ fontSize: "19px" }}
-                          >
+                          <p className="card-text" style={{ fontSize: "19px" }}>
                             Price: {book.price}
                           </p>
                           <div>
-                            <a href="#" className="btn btn-primary mb-3">
+                            <Link
+                              to="/TextbookInfo"
+                              state={{ book }}
+                              className="btn btn-primary mb-3"
+                            >
                               More information
-                            </a>
+                            </Link>
                           </div>
                           <div>
                             <button
@@ -238,11 +238,21 @@ function App() {
         <Route
           path="/Cart"
           element={
-            <CartPage cartItems={cartItems} total={cartTotal} clearCart={clearCart} />
+            <CartPage
+              cartItems={cartItems}
+              total={cartTotal}
+              clearCart={clearCart}
+            />
           }
         />
         <Route path="/sell" element={<SellPage addTextbook={addTextbook} />} />
         <Route path="/Discussion" element={<DiscussionPage />} />
+
+        {/* Textbook info page gets access to addToCart */}
+        <Route
+          path="/TextbookInfo"
+          element={<TextbookInfoPage addToCart={addToCart} />}
+        />
       </Routes>
     </BrowserRouter>
   );
