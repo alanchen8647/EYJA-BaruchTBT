@@ -18,12 +18,10 @@ interface TextbookInfoPageProps {
 function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
   const location = useLocation();
   const navigate = useNavigate();
-
-  // We expect navigation like: <Link to="/TextbookInfo" state={{ book }} />
   const { book } = (location.state as any) || {};
 
   if (!book) {
-    // Fallback if user comes here directly
+    //A failsafe in case the user does not click on a textbook card to get to this page.
     return (
       <div className="container my-5">
         <p>No textbook selected.</p>
@@ -39,12 +37,10 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
 
   return (
     <div className="container my-5">
-      {/* Back button */}
       <button className="btn btn-link mb-4" onClick={() => navigate(-1)}>
         ← Back
       </button>
 
-      {/* Big textbook image */}
       <div className="row justify-content-center mb-5">
         <div className="col-md-6 d-flex justify-content-center">
           <img
@@ -56,7 +52,6 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
         </div>
       </div>
 
-      {/* Textbook information box */}
       <div className="row justify-content-center mb-5">
         <div className="col-md-8">
           <div className="p-4 bg-light">
@@ -87,7 +82,6 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
               </p>
             )}
 
-            {/* Description only on this page */}
             {book.description && (
               <>
                 <hr />
@@ -101,7 +95,6 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
         </div>
       </div>
 
-      {/* Bottom buttons row */}
       <div className="row justify-content-center">
         <div className="col-md-2 d-flex justify-content-center mb-3">
           <button className="btn btn-outline-secondary w-100">
