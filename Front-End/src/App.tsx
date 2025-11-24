@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import "./App.css";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import CartPage from "./CartPage.tsx";
 import SellPage from "./SellPage.tsx";
 import DiscussionPage from "./DiscussionPage.tsx";
@@ -26,6 +32,76 @@ type Textbook = {
 type CommentsByPost = {
   [title: string]: string[];
 };
+
+// 🔎 Small search component that lives inside the Router
+type TextbookSearchProps = {
+  textbooks: Textbook[];
+};
+
+function TextbookSearch({ textbooks }: TextbookSearchProps) {
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  const trimmedQuery = query.trim().toLowerCase();
+
+  const matchingTextbooks =
+    trimmedQuery.length === 0
+      ? []
+      : textbooks.filter((book) =>
+          book.title.toLowerCase().includes(trimmedQuery)
+        );
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!trimmedQuery) return;
+
+    const match = matchingTextbooks[0];
+    if (!match) return;
+
+    navigate("/TextbookInfo", { state: { book: match } });
+  };
+
+  const handleSuggestionClick = (book: Textbook) => {
+    navigate("/TextbookInfo", { state: { book } });
+  };
+
+  return (
+    <div className="position-relative">
+      <form className="d-flex" role="search" onSubmit={handleSubmit}>
+        <input
+          className="form-control me-2"
+          type="search"
+          placeholder="Enter title or author"
+          aria-label="Search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button className="btn btn-outline-primary" type="submit">
+          Search
+        </button>
+      </form>
+
+      {/* Suggestions dropdown */}
+      {matchingTextbooks.length > 0 && (
+        <div
+          className="list-group position-absolute mt-1"
+          style={{ zIndex: 1000, width: "100%" }}
+        >
+          {matchingTextbooks.slice(0, 5).map((book, index) => (
+            <button
+              type="button"
+              key={index}
+              className="list-group-item list-group-item-action"
+              onClick={() => handleSuggestionClick(book)}
+            >
+              {book.title}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function App() {
   const [textbooks, setTextbooks] = useState<Textbook[]>([]);
@@ -90,6 +166,9 @@ a decent price.`,
       "This book is a good refresher for important calculus concepts for a beginner-intermediate course. I mostly used the textbook for practice problems, so I barely touched it. The condition is used, but the actual condition is near pristine.",
   };
 
+  // 🔎 All textbooks available to search (static + user-added)
+  const allTextbooks: Textbook[] = [staticTextbook, ...textbooks];
+
   return (
     <BrowserRouter>
       <header>
@@ -139,24 +218,15 @@ a decent price.`,
                 </li>
               </ul>
 
-              <form className="d-flex" role="search">
-                <input
-                  className="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button className="btn btn-outline-success" type="submit">
-                  Search
-                </button>
-              </form>
+              {/* 🔎 Replace old form with live search component */}
+              <TextbookSearch textbooks={allTextbooks} />
             </div>
           </div>
         </nav>
       </header>
 
       <Routes>
-        {/* HOME PAGE (unchanged) */}
+        {/* HOME PAGE */}
         <Route
           path="/"
           element={
@@ -282,7 +352,7 @@ a decent price.`,
           element={<TextbookInfoPage addToCart={addToCart} />}
         />
 
-        {/* NEW: Comment page for discussion topics */}
+        {/* Comment page for discussion topics */}
         <Route
           path="/Comment"
           element={
