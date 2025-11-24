@@ -16,7 +16,6 @@ import CommentPage from "./CommentPage.tsx";
 import Textbooks1 from "../images/textbooks1.jpg";
 import Mathtextbook from "../images/math-textbook.jpg";
 
-// Type for textbooks shown on the home page
 type Textbook = {
   title: string;
   subject: string;
@@ -28,16 +27,16 @@ type Textbook = {
   description: string;
 };
 
-// Comments keyed by discussion title
 type CommentsByPost = {
   [title: string]: string[];
 };
 
-// 🔎 Small search component that lives inside the Router
 type TextbookSearchProps = {
   textbooks: Textbook[];
 };
 
+//Allows users to search for a specific textbook with the help of a dynamic 
+//list that changes the closer the user is to a textbook's name.
 function TextbookSearch({ textbooks }: TextbookSearchProps) {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
@@ -81,7 +80,7 @@ function TextbookSearch({ textbooks }: TextbookSearchProps) {
         </button>
       </form>
 
-      {/* Suggestions dropdown */}
+      {/* This code makes a list of suggestions depending on the characters that the user has typed. */}
       {matchingTextbooks.length > 0 && (
         <div
           className="list-group position-absolute mt-1"
@@ -108,7 +107,6 @@ function App() {
   const [cartItems, setCartItems] = useState<Textbook[]>([]);
 
   const [commentsByPost, setCommentsByPost] = useState<CommentsByPost>({
-    // Seed comments for the art history topic
     "Best textbook for studying art history?": [
       `I love seeing a person getting interested in art history! A good textbook that I 
 recommend is "Gardner's Art Through the Ages by Helen Gardner". This book does a great 
@@ -119,25 +117,29 @@ a decent price.`,
     ],
   });
 
+  //Lets users add textbooks to the cart.
   const addTextbook = (newBook: Textbook) => {
     setTextbooks((prev) => [...prev, newBook]);
   };
 
+  //Prevents users from adding the same textbook to the cart.
   const addToCart = (book: Textbook) => {
     setCartItems((prev) => {
       const alreadyInCart = prev.some((item) => item.title === book.title);
       if (alreadyInCart) {
-        return prev; // don't add duplicates
+        return prev;
       }
       return [...prev, book];
     });
   };
 
+  //Turns the price string with an actual number/value.
   const parsePrice = (price: string): number => {
     const numeric = parseFloat(price.replace(/[^0-9.]/g, ""));
     return isNaN(numeric) ? 0 : numeric;
   };
 
+  //Calculates the total price the user must pay with all textbooks considered.
   const cartTotal = cartItems.reduce(
     (sum, item) => sum + parsePrice(item.price),
     0
@@ -147,6 +149,7 @@ a decent price.`,
     setCartItems([]);
   };
 
+  //Lets users add comments in the Comment page under a specific discussion.
   const addComment = (postTitle: string, comment: string) => {
     setCommentsByPost((prev) => ({
       ...prev,
@@ -154,6 +157,7 @@ a decent price.`,
     }));
   };
 
+  //Dummy textbook card used to show what the textbook cards look like.
   const staticTextbook: Textbook = {
     title: "Calculus by Ron Larson and Bruce Edwards",
     subject: "Math",
@@ -166,7 +170,6 @@ a decent price.`,
       "This book is a good refresher for important calculus concepts for a beginner-intermediate course. I mostly used the textbook for practice problems, so I barely touched it. The condition is used, but the actual condition is near pristine.",
   };
 
-  // 🔎 All textbooks available to search (static + user-added)
   const allTextbooks: Textbook[] = [staticTextbook, ...textbooks];
 
   return (
@@ -226,11 +229,11 @@ a decent price.`,
       </header>
 
       <Routes>
-        {/* HOME PAGE */}
         <Route
           path="/"
           element={
             <>
+              {/* Dummy textbook card*/}
               <div className="container my-5">
                 <img
                   src={Textbooks1}
@@ -242,7 +245,6 @@ a decent price.`,
 
               <div className="container">
                 <div className="row g-4">
-                  {/* Static card */}
                   <div className="col-md-3 mb-4">
                     <div className="card" style={{ width: "18rem" }}>
                       <img
@@ -285,7 +287,7 @@ a decent price.`,
                     </div>
                   </div>
 
-                  {/* Dynamic cards */}
+                  {/*Textbook cards that are added by the user to the home page.*/}
                   {textbooks.map((book, index) => (
                     <div className="col-md-3 mb-4" key={index}>
                       <div className="card" style={{ width: "18rem" }}>
@@ -333,6 +335,7 @@ a decent price.`,
           }
         />
 
+        {/*Routes to all the other pages in the website.*/}
         <Route
           path="/Cart"
           element={
@@ -346,13 +349,11 @@ a decent price.`,
         <Route path="/sell" element={<SellPage addTextbook={addTextbook} />} />
         <Route path="/Discussion" element={<DiscussionPage />} />
 
-        {/* Textbook info page gets access to addToCart */}
         <Route
           path="/TextbookInfo"
           element={<TextbookInfoPage addToCart={addToCart} />}
         />
 
-        {/* Comment page for discussion topics */}
         <Route
           path="/Comment"
           element={
