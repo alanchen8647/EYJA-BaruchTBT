@@ -9,6 +9,9 @@ function DiscussionPage() {
 
   return (
     <>
+      <div className="container my-3" style={{textDecoration: "underline"}}>
+        <h1>Community Page</h1>
+      </div>
       <div className="container my-5">
         <div className="card" style={{ width: "18rem;", border: "3px solid black" }}>
           <div className="card-body">

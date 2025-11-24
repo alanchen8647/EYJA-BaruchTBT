@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./App.css";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import CartPage from "./CartPage.tsx";
 import SellPage from "./SellPage.tsx";
 import DiscussionPage from "./DiscussionPage.tsx";
 import Textbooks1 from "../images/textbooks1.jpg";
@@ -38,9 +39,9 @@ function App() {
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
 
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link className="nav-link active" aria-current="page" to="/Cart">
                     Cart
-                  </a>
+                  </Link>
                 </li>
 
                 <li className="nav-item">
@@ -118,6 +119,7 @@ function App() {
           </>
         } />
 
+        <Route path="/Cart" element={<CartPage />}/>
         <Route path="/sell" element={<SellPage />} />
         <Route path="/Discussion" element={<DiscussionPage />} />
       </Routes>

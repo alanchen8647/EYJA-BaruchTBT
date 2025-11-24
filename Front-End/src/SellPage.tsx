@@ -9,6 +9,9 @@ function SellPage() {
 
   return (
     <>
+      <div className="container my-3" style={{textDecoration: "underline"}}>
+        <h1>Sell Page</h1>
+      </div>
       <form>
         <div className="container my-5">
           <div className="mb-4">
