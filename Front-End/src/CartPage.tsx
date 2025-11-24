@@ -4,10 +4,10 @@ import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 interface CartPageProps {
   cartItems: { title: string; price: string }[];
   total: number;
-  clearCart: () => void;   // ✅ add this
+  clearCart: () => void;
 }
 
-function CartPage({ cartItems, total, clearCart }: CartPageProps) {  // ✅ accept it here
+function CartPage({ cartItems, total, clearCart }: CartPageProps) {
   fetch("/api/test-get")
     .then((response) => response.json())
     .then((data) => console.log(data));
@@ -16,6 +16,8 @@ function CartPage({ cartItems, total, clearCart }: CartPageProps) {  // ✅ acce
 
   return (
     <>
+      {/*Shows the user the name of the textbooks in their cart and the total price, or 
+      tells them "you cart is empty" if there are no textbooks in their cart.*/}
       <div className="container my-4">
         {hasItems ? (
           <>
@@ -42,6 +44,7 @@ function CartPage({ cartItems, total, clearCart }: CartPageProps) {  // ✅ acce
           Overall Total: ${total.toFixed(2)}
         </p>
 
+        {/*When the user clicks the checkout button, their cart is automatically reset to 0.*/}
         <button
           className="btn btn-success"
           disabled={!hasItems}
