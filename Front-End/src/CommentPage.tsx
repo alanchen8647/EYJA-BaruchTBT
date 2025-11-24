@@ -15,8 +15,6 @@ function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  // We expect: <Link to="/Comment" state={{ post }} />
   const { post } = (location.state as any) || {};
 
   if (!post) {
@@ -53,7 +51,8 @@ function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
         <h1>Comments</h1>
       </div>
 
-      {/* Original post at the top */}
+      {/*This keeps the original topic at the top of the comments so that the user
+      remembers what they are are adding comments to.*/}
       <div className="container my-3">
         <div
           className="card"
@@ -66,7 +65,7 @@ function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
         </div>
       </div>
 
-      {/* Existing comments */}
+      {/*Dummy comments to show what the comment cards look like.*/}
       {currentComments.map((text, index) => (
         <div className="container my-3" key={index}>
           <div
@@ -80,7 +79,6 @@ function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
         </div>
       ))}
 
-      {/* Full-width "Make a Comment" button */}
       <div className="container my-4">
         <button
           className="btn btn-primary w-100"
@@ -90,7 +88,7 @@ function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
         </button>
       </div>
 
-      {/* Comment form */}
+      {/*Lets the user add comments under a specific discussion topic.*/}
       {showForm && (
         <div className="container my-3">
           <form onSubmit={handleSubmit}>
