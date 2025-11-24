@@ -21,9 +21,44 @@ type Textbook = {
 
 function App() {
   const [textbooks, setTextbooks] = useState<Textbook[]>([]);
+  const [cartItems, setCartItems] = useState<Textbook[]>([]);
 
   const addTextbook = (newBook: Textbook) => {
     setTextbooks((prev) => [...prev, newBook]);
+  };
+
+  const addToCart = (book: Textbook) => {
+    setCartItems((prev) => {
+      const alreadyInCart = prev.some((item) => item.title === book.title);
+      if (alreadyInCart) {
+        return prev; // don't add duplicates
+      }
+      return [...prev, book];
+    });
+  };
+
+  const parsePrice = (price: string): number => {
+    const numeric = parseFloat(price.replace(/[^0-9.]/g, ""));
+    return isNaN(numeric) ? 0 : numeric;
+  };
+
+  const cartTotal = cartItems.reduce(
+    (sum, item) => sum + parsePrice(item.price),
+    0
+  );
+
+  const clearCart = () => {
+  setCartItems([]);
+};
+
+  const staticTextbook: Textbook = {
+    title: "Calculus by Ron Larson and Bruce Edwards",
+    subject: "Math",
+    course: "MTH 2003",
+    condition: "Used",
+    price: "$60.00",
+    image: Mathtextbook,
+    contact: "",
   };
 
   return (
@@ -135,9 +170,13 @@ function App() {
                           </a>
                         </div>
                         <div>
-                          <a href="#" className="btn btn-primary">
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => addToCart(staticTextbook)}
+                          >
                             Add to cart
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -154,13 +193,22 @@ function App() {
                         />
                         <div className="card-body">
                           <h5 className="card-title">{book.title}</h5>
-                          <p className="card-text" style={{ fontSize: "19px" }}>
+                          <p
+                            className="card-text"
+                            style={{ fontSize: "19px" }}
+                          >
                             Course Number: {book.course}
                           </p>
-                          <p className="card-text" style={{ fontSize: "19px" }}>
+                          <p
+                            className="card-text"
+                            style={{ fontSize: "19px" }}
+                          >
                             Condition: {book.condition}
                           </p>
-                          <p className="card-text" style={{ fontSize: "19px" }}>
+                          <p
+                            className="card-text"
+                            style={{ fontSize: "19px" }}
+                          >
                             Price: {book.price}
                           </p>
                           <div>
@@ -169,9 +217,13 @@ function App() {
                             </a>
                           </div>
                           <div>
-                            <a href="#" className="btn btn-primary">
+                            <button
+                              type="button"
+                              className="btn btn-primary"
+                              onClick={() => addToCart(book)}
+                            >
                               Add to cart
-                            </a>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -183,7 +235,12 @@ function App() {
           }
         />
 
-        <Route path="/Cart" element={<CartPage />} />
+        <Route
+          path="/Cart"
+          element={
+            <CartPage cartItems={cartItems} total={cartTotal} clearCart={clearCart} />
+          }
+        />
         <Route path="/sell" element={<SellPage addTextbook={addTextbook} />} />
         <Route path="/Discussion" element={<DiscussionPage />} />
       </Routes>
