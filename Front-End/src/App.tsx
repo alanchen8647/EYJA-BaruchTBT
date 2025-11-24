@@ -18,6 +18,7 @@ type Textbook = {
   price: string;
   image: string;
   contact: string;
+  description: string;   // ✅ NEW
 };
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
     price: "$60.00",
     image: Mathtextbook,
     contact: "",
+    description: "This book is a good refresher for important calculus concepts for a beginner-intermediate course. I mostly used the texbook for practice problems, so I barely touched it. The condition is used, but the actual condition is near pristine.",     // ✅ static book has empty description
   };
 
   return (

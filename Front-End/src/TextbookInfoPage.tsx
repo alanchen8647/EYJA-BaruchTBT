@@ -11,6 +11,7 @@ interface TextbookInfoPageProps {
     price: string;
     image: string;
     contact: string;
+    description: string;   // ✅ NEW
   }) => void;
 }
 
@@ -81,9 +82,20 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
               </p>
             )}
             {book.contact && (
-              <p className="mb-0">
+              <p className="mb-1">
                 <strong>Seller contact:</strong> {book.contact}
               </p>
+            )}
+
+            {/* Description only on this page */}
+            {book.description && (
+              <>
+                <hr />
+                <p className="mb-1">
+                  <strong>Description:</strong>
+                </p>
+                <p className="mb-0">{book.description}</p>
+              </>
             )}
           </div>
         </div>

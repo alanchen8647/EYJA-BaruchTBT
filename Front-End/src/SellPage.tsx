@@ -12,6 +12,7 @@ interface SellPageProps {
     price: string;
     image: string;
     contact: string;
+    description: string;   // ✅ NEW
   }) => void;
 }
 
@@ -24,6 +25,7 @@ function SellPage({ addTextbook }: SellPageProps) {
   const [condition, setCondition] = useState("");
   const [price, setPrice] = useState("");
   const [contact, setContact] = useState("");
+  const [description, setDescription] = useState("");  // ✅ NEW
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,6 +41,7 @@ function SellPage({ addTextbook }: SellPageProps) {
       price,
       image: imageURL,
       contact,
+      description,       // ✅ pass description through
     });
 
     // Go back to home so the user sees their new textbook card
@@ -167,6 +170,25 @@ function SellPage({ addTextbook }: SellPageProps) {
                 }
               }}
             />
+          </div>
+
+          {/* Description textarea */}
+          <div className="mb-3">
+            <label
+              htmlFor="descriptionTextarea"
+              className="form-label"
+              style={{ fontWeight: "bold" }}
+            >
+              Textbook Description
+            </label>
+            <textarea
+              className="form-control"
+              id="descriptionTextarea"
+              rows={3}
+              required
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
           </div>
 
           <div className="mb-3">
