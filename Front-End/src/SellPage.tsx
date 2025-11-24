@@ -12,7 +12,7 @@ interface SellPageProps {
     price: string;
     image: string;
     contact: string;
-    description: string;   // ✅ NEW
+    description: string; 
   }) => void;
 }
 
@@ -25,7 +25,7 @@ function SellPage({ addTextbook }: SellPageProps) {
   const [condition, setCondition] = useState("");
   const [price, setPrice] = useState("");
   const [contact, setContact] = useState("");
-  const [description, setDescription] = useState("");  // ✅ NEW
+  const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,15 +41,17 @@ function SellPage({ addTextbook }: SellPageProps) {
       price,
       image: imageURL,
       contact,
-      description,       // ✅ pass description through
+      description,
     });
 
-    // Go back to home so the user sees their new textbook card
+    //Send the user to the home page after adding a textbook card with the sell form.
     navigate("/");
   };
 
   return (
     <>
+      {/*All this code is the form that the user will use to type in information that
+      will be shown in their textbook cards and textbook info page.*/}
       <div className="container my-3" style={{ textDecoration: "underline" }}>
         <h1>Sell Page</h1>
       </div>
@@ -171,8 +173,6 @@ function SellPage({ addTextbook }: SellPageProps) {
               }}
             />
           </div>
-
-          {/* Description textarea */}
           <div className="mb-3">
             <label
               htmlFor="descriptionTextarea"
@@ -210,6 +210,7 @@ function SellPage({ addTextbook }: SellPageProps) {
             />
           </div>
 
+          {/*Submits the form for the user.*/}
           <button type="submit" className="btn btn-primary mt-4">
             Add Textbook
           </button>
