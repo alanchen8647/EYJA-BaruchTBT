@@ -1,5 +1,8 @@
 import { Router } from 'express';
 var router = Router();
+import {supabase} from '../db.js';
+
+
 
 /* GET home page. */
 router.get('/api/test-get', function(req, res, next) {
