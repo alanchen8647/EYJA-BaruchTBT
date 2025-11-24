@@ -13,7 +13,6 @@ function DiscussionPage() {
     .then((response) => response.json())
     .then((data) => console.log(data));
 
-  // Default posts (your original two cards)
   const [posts, setPosts] = useState<Post[]>([
     {
       title: "Best textbook for studying art history?",
@@ -61,7 +60,8 @@ can get it as soon as possible.`,
         <h1>Community Page</h1>
       </div>
 
-      {/* Existing + user posts rendered as clickable cards */}
+      {/*Allows the user to click into the discussion cards so that they can leave comments
+      under specific topics.*/}
       {posts.map((post, index) => (
         <div className="container my-5" key={index}>
           <Link
@@ -82,7 +82,8 @@ can get it as soon as possible.`,
         </div>
       ))}
 
-      {/* Button to toggle the post form */}
+      {/*Lets the user add a post in the discussion page. The user can exit out of the 
+      comment they're trying to make.*/}
       <div className="container mb-3">
         <button
           className="btn btn-primary"
@@ -92,7 +93,6 @@ can get it as soon as possible.`,
         </button>
       </div>
 
-      {/* Post creation form */}
       {showForm && (
         <div className="container my-3">
           <form onSubmit={handleSubmit}>
