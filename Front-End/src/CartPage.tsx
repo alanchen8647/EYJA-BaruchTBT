@@ -1,5 +1,5 @@
 import "./App.css";
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 interface CartPageProps {
   cartItems: { title: string; price: string }[];
