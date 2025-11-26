@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config(); // LOAD ENV VARIABLES
 
-
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
