@@ -1,5 +1,5 @@
 import "./App.css";
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface TextbookInfoPageProps {
