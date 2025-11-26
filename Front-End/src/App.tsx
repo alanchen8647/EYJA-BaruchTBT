@@ -13,6 +13,7 @@ import SellPage from "./SellPage.tsx";
 import DiscussionPage from "./DiscussionPage.tsx";
 import TextbookInfoPage from "./TextbookInfoPage.tsx";
 import CommentPage from "./CommentPage.tsx";
+import ChatPage from "./ChatPage.tsx";
 import Textbooks1 from "../images/textbooks1.jpg";
 import Mathtextbook from "../images/math-textbook.jpg";
 
@@ -178,7 +179,7 @@ a decent price.`,
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
           <div className="container-fluid">
             <Link className="navbar-brand" to="/">
-              Navbar
+              Baruch TBT
             </Link>
 
             <button
@@ -219,9 +220,14 @@ a decent price.`,
                     Discussion/Community
                   </Link>
                 </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link active" to="/Chat">
+                    Chat Group
+                  </Link>
+                </li>
               </ul>
 
-              {/* 🔎 Replace old form with live search component */}
               <TextbookSearch textbooks={allTextbooks} />
             </div>
           </div>
@@ -363,6 +369,8 @@ a decent price.`,
             />
           }
         />
+
+        <Route path="/Chat" element={<ChatPage />} />
       </Routes>
     </BrowserRouter>
   );
