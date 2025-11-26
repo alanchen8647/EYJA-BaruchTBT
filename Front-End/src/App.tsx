@@ -14,6 +14,7 @@ import DiscussionPage from "./DiscussionPage.tsx";
 import TextbookInfoPage from "./TextbookInfoPage.tsx";
 import CommentPage from "./CommentPage.tsx";
 import ChatPage from "./ChatPage.tsx";
+import LoginPage from "./LoginPage.tsx";
 import Textbooks1 from "../images/textbooks1.jpg";
 import Mathtextbook from "../images/math-textbook.jpg";
 
@@ -176,7 +177,7 @@ a decent price.`,
   return (
     <BrowserRouter>
       <header>
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <nav className="navbar navbar-expand-lg bg-body-tertiary bg-primary">
           <div className="container-fluid">
             <Link className="navbar-brand" to="/">
               Baruch TBT
@@ -223,7 +224,13 @@ a decent price.`,
 
                 <li className="nav-item">
                   <Link className="nav-link active" to="/Chat">
-                    Chat Group
+                    Chat
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link active" to="/Login">
+                    Login
                   </Link>
                 </li>
               </ul>
@@ -371,6 +378,8 @@ a decent price.`,
         />
 
         <Route path="/Chat" element={<ChatPage />} />
+
+        <Route path="/Login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );

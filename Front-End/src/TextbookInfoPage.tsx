@@ -11,7 +11,7 @@ interface TextbookInfoPageProps {
     price: string;
     image: string;
     contact: string;
-    description: string;   // ✅ NEW
+    description: string;
   }) => void;
 }
 
@@ -97,11 +97,6 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
 
       <div className="row justify-content-center">
         <div className="col-md-2 d-flex justify-content-center mb-3">
-          <button className="btn btn-outline-secondary w-100">
-            More questions
-          </button>
-        </div>
-        <div className="col-md-2 d-flex justify-content-center mb-3">
           <button
             className="btn btn-primary w-100"
             onClick={() => addToCart(book)}
@@ -110,7 +105,11 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
           </button>
         </div>
         <div className="col-md-2 d-flex justify-content-center mb-3">
-          <button className="btn btn-outline-secondary w-100">
+          {/* The button sends the user to the chat page to chat about a specific textbook */}
+          <button
+            className="btn btn-outline-secondary w-100"
+            onClick={() => navigate("/Chat", { state: { book } })}
+          >
             Exchange page
           </button>
         </div>
