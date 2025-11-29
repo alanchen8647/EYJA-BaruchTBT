@@ -1,3 +1,5 @@
+//This file is written to connection to mySQL database, but we are using supabase
+//This file should not be used
 import { Router } from 'express';
 import mysql from 'mysql2/promise';
 import { readFile } from 'fs/promises';

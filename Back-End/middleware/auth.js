@@ -1,4 +1,4 @@
-import supabase from '../db.js';
+import {supabase} from '../db.js';
 
 export const authenticateToken = async (req, res, next) =>{
     const authHeader = req.headers['authorization'];
