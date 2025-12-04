@@ -1,26 +1,31 @@
-import "./App.css";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getTextbookById } from "../api.jsx";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import placeholderImage from "../../images/placeholder.jpg";
 
-interface TextbookInfoPageProps {
-  addToCart: (book: {
-    title: string;
-    subject: string;
-    course: string;
-    condition: string;
-    price: string;
-    image: string;
-    contact: string;
-    description: string;
-  }) => void;
-}
-
-function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
-  const location = useLocation();
+function TextbookInfoPage() {
   const navigate = useNavigate();
-  const { book } = (location.state as any) || {};
+  const {id} = useParams();
+  const [book, setBook] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!book) {
+  useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        if (id) {
+          const data = await getTextbookById(id);
+          setBook(data.textbook);
+        }
+      } catch (error) {
+        console.error("Error fetching textbook details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBook();
+  }, [id]);
+
+  if (book === null) {
     //A failsafe in case the user does not click on a textbook card to get to this page.
     return (
       <div className="container my-5">
@@ -36,15 +41,19 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
   }
 
   return (
-    <div className="container my-5">
-      <button className="btn btn-link mb-4" onClick={() => navigate(-1)}>
-        ← Back
-      </button>
-
+    loading ? (
+      <div className="container my-5">
+        <p>Loading...</p>
+      </div>
+    ) : (
+      <div className="container my-5">
+        <button className="btn btn-link mb-4" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
       <div className="row justify-content-center mb-5">
         <div className="col-md-6 d-flex justify-content-center">
           <img
-            src={book.image}
+            src={book.images_url?.[0] || placeholderImage}
             alt={book.title}
             className="img-fluid"
             style={{ maxHeight: "400px", objectFit: "contain" }}
@@ -61,9 +70,9 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
                 <strong>Subject:</strong> {book.subject}
               </p>
             )}
-            {book.course && (
+            {book.course_num && (
               <p className="mb-1">
-                <strong>Course Number:</strong> {book.course}
+                <strong>Course Number:</strong> {book.course_num}
               </p>
             )}
             {book.condition && (
@@ -74,11 +83,6 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
             {book.price && (
               <p className="mb-1">
                 <strong>Price:</strong> {book.price}
-              </p>
-            )}
-            {book.contact && (
-              <p className="mb-1">
-                <strong>Seller contact:</strong> {book.contact}
               </p>
             )}
 
@@ -99,7 +103,7 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
         <div className="col-md-2 d-flex justify-content-center mb-3">
           <button
             className="btn btn-primary w-100"
-            onClick={() => addToCart(book)}
+            onClick={() => {/* Add to cart functionality here */}}
           >
             Add to cart
           </button>
@@ -115,6 +119,7 @@ function TextbookInfoPage({ addToCart }: TextbookInfoPageProps) {
         </div>
       </div>
     </div>
+  )
   );
 }
 

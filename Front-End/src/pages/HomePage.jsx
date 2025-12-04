@@ -2,7 +2,6 @@ import TextbookList from "../components/textbook_list.jsx";
 import TextbookSearch from "../components/textbook_search.jsx";
 import Textbooks1 from "../../images/textbooks1.jpg";
 import {useEffect, useState} from "react";
-import Mathtextbook from "../../images/math-textbook.jpg";
 import { getTextbookList } from "../api.jsx";
 
 

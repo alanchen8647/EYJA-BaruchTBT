@@ -1,39 +1,49 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {useAuth} from "../context/AuthContext.jsx";
+import { createTextbook } from "../api.jsx";
+// import {createTextbook} from "../api.jsx";
 
-// interface SellPageProps {
-//   addTextbook: (book: {
-//     title: string;
-//     subject: string;
-//     course: string;
-//     condition: string;
-//     price: string;
-//     image: string;
-//     contact: string;
-//     description: string; 
-//   }) => void;
-// }
-
-function SellPage() {
+function SellPage(){
+  const {user} = useAuth();
+  console.log("Current user:", user);
   const navigate = useNavigate();
+  const [form , setForm] = useState({
+    seller_id: user?.id || "",
+    title: "",
+    author: "",
+    subject: "",
+    course_num: "",
+    condition: "",
+    price: "",
+    description: "",
+  });
 
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [subject, setSubject] = useState("");
-  const [course, setCourse] = useState("");
-  const [condition, setCondition] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [bookImages, setBookImages] = useState<FileList | null>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const imageURL = imageFile ? URL.createObjectURL(imageFile) : "";
-
-
-    //Send the user to the home page after adding a textbook card with the sell form.
-    navigate("/");
+    console.log("Form data to be submitted:", form);
+    if (!bookImages) {
+      alert("Please upload at least one image of the book.");
+      return;
+    }
+    try {
+      await createTextbook({ ...form, bookImages });
+      alert("Textbook added successfully!");
+      // navigate("/");
+    } catch (error) {
+      console.error("Error adding textbook:", error);
+      alert("Failed to add textbook. Please try again.");
+    }
   };
+
+  const handleImageUploads = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setBookImages(e.target.files);
+    }
+  };
+
 
   return (
     <>
@@ -59,8 +69,8 @@ function SellPage() {
               id="titleInput"
               placeholder="E.g. Calculus"
               required
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
             />
           </div>
 
@@ -78,8 +88,8 @@ function SellPage() {
               id="authorInput"
               placeholder="E.g. Gilbert Strang"
               required
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
+              value={form.author}
+              onChange={(e) => setForm({ ...form, author: e.target.value })}
             />
           </div>
 
@@ -97,8 +107,8 @@ function SellPage() {
               id="subjectInput"
               placeholder="E.g. Math"
               required
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
+              value={form.subject}
+              onChange={(e) => setForm({ ...form, subject: e.target.value })}
             />
           </div>
 
@@ -116,8 +126,8 @@ function SellPage() {
               id="courseInput"
               placeholder="E.g. MTH 3150"
               required
-              value={course}
-              onChange={(e) => setCourse(e.target.value)}
+              value={form.course_num}
+              onChange={(e) => setForm({ ...form, course_num: e.target.value })}
             />
           </div>
 
@@ -135,8 +145,8 @@ function SellPage() {
               id="conditionInput"
               placeholder="E.g. Used, new, worn-out"
               required
-              value={condition}
-              onChange={(e) => setCondition(e.target.value)}
+              value={form.condition}
+              onChange={(e) => setForm({ ...form, condition: e.target.value })}
             />
           </div>
 
@@ -154,8 +164,8 @@ function SellPage() {
               id="priceInput"
               placeholder="E.g. $50.00"
               required
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={form.price}
+              onChange={(e) => setForm({ ...form, price: e.target.value })}
             />
           </div>
 
@@ -165,18 +175,16 @@ function SellPage() {
               className="form-label"
               style={{ fontWeight: "bold" }}
             >
-              Picture of Textbook
+              Book additional images
             </label>
             <input
               className="form-control form-control-lg"
-              id="imageInput"
+              id="bookImagesInput"
               type="file"
               required
-              onChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  setImageFile(e.target.files[0]);
-                }
-              }}
+              accept="image/*"
+              multiple
+              onChange={handleImageUploads}
             />
           </div>
           <div className="mb-3">
@@ -192,8 +200,8 @@ function SellPage() {
               id="descriptionTextarea"
               rows={3}
               required
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
             ></textarea>
           </div>
 

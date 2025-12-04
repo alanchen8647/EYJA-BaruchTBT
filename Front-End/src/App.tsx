@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import "./App.css";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {
   BrowserRouter,
   Routes,
@@ -13,7 +11,7 @@ import HomePage from "./pages/HomePage.jsx";
 // import CartPage from "./CartPage.tsx";
 import SellPage from "./pages/SellPage.tsx";
 // import DiscussionPage from "./DiscussionPage.tsx";
-// import TextbookInfoPage from "./TextbookInfoPage.tsx";
+import TextbookInfoPage from "./pages/TextbookInfoPage.tsx";
 // import CommentPage from "./CommentPage.tsx";
 // import ChatPage from "./ChatPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
@@ -120,10 +118,10 @@ function App() {
         <Route path="/sell" element={<SellPage />} />
         {/* <Route path="/Discussion" element={<DiscussionPage />} /> */}
 
-        {/* <Route
-          path="/TextbookInfo"
-          element={<TextbookInfoPage addToCart={addToCart} />}
-        /> */}
+        <Route
+          path="/TextbookInfo/:id"
+          element={<TextbookInfoPage />}
+        />
 
         {/* <Route
           path="/Comment"
