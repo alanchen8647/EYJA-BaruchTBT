@@ -75,3 +75,28 @@ const uploadImages = async (imageFile, textbookId) => {
 
     return { url: publicURLData.publicUrl };
 }
+
+export async function expressInterest(interestData) {
+    const res = await fetch(`${API.baseUrl}deal/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(interestData),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to express trade interest");
+    }
+    const data = await res.json();
+    return data;
+}
+
+export async function getTradeInterestsByUserId(userId) {
+    const res = await fetch(`${API.baseUrl}deal/${userId}`);
+    if (!res.ok) {
+        throw new Error("Failed to fetch trade interests");
+    }
+    const data = await res.json();
+    return data.interests;
+}
+

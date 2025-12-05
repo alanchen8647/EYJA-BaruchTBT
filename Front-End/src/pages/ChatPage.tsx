@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import "./App.css";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import Profile from "../images/profile.png";
+import Profile from "../../images/profile.png";
 
 type Message = {
   from: "You" | "Seller";

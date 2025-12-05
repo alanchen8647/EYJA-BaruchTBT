@@ -9,6 +9,7 @@ import cors from 'cors';
 import indexRouter from './routes/index.js';
 import authRouter from './routes/auth.js';
 import textbookRouter from './routes/textbook.js';
+import dealRouter from './routes/deal.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -29,6 +30,7 @@ app.use(expressStatic(join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', authRouter);
 app.use('/textbooks', textbookRouter);
+app.use('/deal', dealRouter);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Express.js server and supabase is running' });
