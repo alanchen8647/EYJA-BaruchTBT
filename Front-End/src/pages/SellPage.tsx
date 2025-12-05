@@ -4,10 +4,14 @@ import {useAuth} from "../context/AuthContext.jsx";
 import { createTextbook } from "../api.jsx";
 // import {createTextbook} from "../api.jsx";
 
+//The sell page allows users to input textbook information to create a new textbook listing.
 function SellPage(){
+  //Gets the current user information from the authentication context.
   const {user} = useAuth();
-  console.log("Current user:", user);
+
   const navigate = useNavigate();
+
+  //Form state to hold the textbook information input by the user.
   const [form , setForm] = useState({
     seller_id: user?.id || "",
     title: "",
@@ -19,25 +23,28 @@ function SellPage(){
     description: "",
   });
 
+  //State to hold the uploaded book images.
   const [bookImages, setBookImages] = useState<FileList | null>(null);
 
+  //Handles the form submission to create a new textbook listing.
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form data to be submitted:", form);
     if (!bookImages) {
       alert("Please upload at least one image of the book.");
       return;
     }
+    //Calls the createTextbook API function to add the new textbook.
     try {
       await createTextbook({ ...form, bookImages });
       alert("Textbook added successfully!");
-      // navigate("/");
+      navigate("/");
     } catch (error) {
       console.error("Error adding textbook:", error);
       alert("Failed to add textbook. Please try again.");
     }
   };
 
+  //Handles the image file input changes and updates the state.
   const handleImageUploads = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setBookImages(e.target.files);

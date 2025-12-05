@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function TextbookSearch({ textbooks, setSearchResults }) {
     const [query, setQuery] = useState("");
     const trimmedQuery = query.trim().toLowerCase();
-
+    //Filters textbooks based on the search query.
     const matchingTextbooks =
         trimmedQuery.length === 0
             ? textbooks
@@ -12,11 +12,12 @@ function TextbookSearch({ textbooks, setSearchResults }) {
                      (book.author || "").toLowerCase().includes(trimmedQuery))
                 );
 
+    //Handles the form submission to update search results.
     const handleSubmit = (e) => {
         e.preventDefault();
         setSearchResults(matchingTextbooks);
     };
-
+    //Renders the search form.
     return (
         <div className="position-relative">
             <form className="d-flex" role="search" onSubmit={handleSubmit}>

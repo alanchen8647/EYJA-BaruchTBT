@@ -6,9 +6,12 @@ import { getTextbookList } from "../api.jsx";
 
 
 export default function Homepage() {
+    //State variables for textbooks, search results, and loading status.
     const [textbooks, setTextbooks] = useState([]);
     const [searchResults, setSearchResults] = useState(textbooks);
     const [loading, setLoading] = useState(true);
+
+    //Fetches the list of textbooks from the backend when the component mounts.
     useEffect(() => {
         setLoading(true);
         try{

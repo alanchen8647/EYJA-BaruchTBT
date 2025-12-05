@@ -9,6 +9,9 @@ function TextbookInfoPage() {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  //Fetches textbook details based on the ID from the URL parameters.
+  //Populates the textbook info page with the relevant information.
+  //If no textbook is found, it shows a message and a button to go back home.
   useEffect(() => {
     const fetchBook = async () => {
       try {
@@ -25,6 +28,7 @@ function TextbookInfoPage() {
     fetchBook();
   }, [id]);
 
+  //If no textbook is selected, show a message and a button to go back home.
   if (book === null) {
     //A failsafe in case the user does not click on a textbook card to get to this page.
     return (
@@ -40,6 +44,8 @@ function TextbookInfoPage() {
     );
   }
 
+  //Renders the textbook info page with all the details and options.
+  //Todo: Carousel for multiple images.
   return (
     loading ? (
       <div className="container my-5">

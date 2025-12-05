@@ -6,15 +6,20 @@ import {useAuth} from "../context/AuthContext.jsx";
 
 function LoginPage() {
   const navigate = useNavigate();
+
+  //Redirects to home if already logged in.
   const user = useAuth();
   if (user?.user) {
     navigate("/");
   }
 
+  //State variables for email, password, and whether to sign in or sign up.
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [SignInOrSignUp, setSignInOrSignUp] = useState("Sign In");
 
+
+  //Handles user sign-in using Supabase authentication.
   const handleSignIn = async () => {
     const {data, error} = await supabase.auth.signInWithPassword({
       email: email,
@@ -31,6 +36,7 @@ function LoginPage() {
     }
   };
 
+  //Handles user sign-up using Supabase authentication and creates a profile.
   const handleSignUp = async () => {
     const {data, error} = await supabase.auth.signUp({
       email: email,
@@ -54,6 +60,8 @@ function LoginPage() {
     navigate("/");
   };
 
+
+  //Renders the login/sign-up form with email and password fields.
   return (
     <>
       <div className="Container my-5">

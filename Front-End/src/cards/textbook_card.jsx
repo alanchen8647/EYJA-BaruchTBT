@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 import placeholderImage from "../../images/placeholder.jpg";
 
 export default function TextbookCard({ textbook }) {
-  console.log(textbook);
   const navigate = useNavigate();
-
+  //Renders a card displaying textbook information.
   return (
     <div className="col-md-3 mb-4">
       <div className="card" style={{ width: "18rem" }}>
