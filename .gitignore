@@ -28,3 +28,10 @@ dist-ssr
 node_modules/
 Back-End/node_modules/
 Front-End/node_modules/
+
+# AWS SAM
+.aws-sam/
+
+# Vite
+.vite/
+coverage/
