@@ -3,6 +3,7 @@ import { getTextbookById, expressInterest} from "../api.jsx";
 import {useNavigate, useParams } from "react-router-dom";
 import placeholderImage from "../../images/placeholder.jpg";
 import {useAuth} from "../context/AuthContext.jsx";
+import TextbookImgCarasol from "../components/textbookimgcarasol.jsx";
 
 
 function TextbookInfoPage() {
@@ -85,12 +86,13 @@ function TextbookInfoPage() {
         </button>
       <div className="row justify-content-center mb-5">
         <div className="col-md-6 d-flex justify-content-center">
-          <img
+          {/* <img
             src={book.images_url?.[0] || placeholderImage}
             alt={book.title}
             className="img-fluid"
             style={{ maxHeight: "400px", objectFit: "contain" }}
-          />
+          /> */}
+          <TextbookImgCarasol image={book.images_url}/>
         </div>
       </div>
 
@@ -134,20 +136,12 @@ function TextbookInfoPage() {
 
       <div className="row justify-content-center">
         <div className="col-md-2 d-flex justify-content-center mb-3">
-          <button
-            className="btn btn-primary w-100"
-            onClick={() => {/* Add to cart functionality here */}}
-          >
-            Add to cart
-          </button>
-        </div>
-        <div className="col-md-2 d-flex justify-content-center mb-3">
           {/* The button sends the user to the chat page to chat about a specific textbook */}
           <button
             className="btn btn-outline-secondary w-100"
             onClick={() => handleExpressInterest()}
           >
-            Sent Trade Interest
+            Send Trade Interest
           </button>
         </div>
       </div>
