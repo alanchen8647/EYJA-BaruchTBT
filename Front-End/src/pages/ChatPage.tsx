@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Profile from "../../images/profile.png";
+import { supabase } from "../supabaseClient.js";
+import { getChatrooms } from "../api.jsx";
+import ChatList from "../components/chatroom/ChatRoomList.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import ChatWindow from "../components/chatroom/ChatWindow.jsx";
+import { resetUnread } from "../api.jsx";
 
 type Message = {
   from: "You" | "Seller";
@@ -8,28 +14,89 @@ type Message = {
 };
 
 function ChatPage() {
-  const location = useLocation();
-  const { book } = (location.state as any) || {};
+  const [chatrooms, setChatrooms] = useState([]);
+  const [currentChatroom, setCurrentChatroom] = useState(null);
+  const { user, loading } = useAuth();
+  async function loadChats() {
+    const token = (await supabase.auth.getSession()).data.session?.access_token;
+    if (token) {
+      const chatrooms = await getChatrooms(token);
+      setChatrooms(chatrooms);
+    }
+  }
 
-  const sellerName = book?.contact || "Seller";
-  const bookTitle = book?.title || "Textbook";
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return;
+    loadChats();
+    const channel = supabase
+      .channel("chat_room_updates")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "chat_room",
+          filter: `buyer_id=eq.${user.id}`,
+        },
+        (payload) => {
+          console.log("Buyer update received:", payload);
+          loadChats();
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "chat_room",
+          filter: `seller_id=eq.${user.id}`,
+        },
+        (payload) => {
+          console.log("Seller update received:", payload);
+          loadChats();
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "chat_room_user_status",
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          console.log("Seller update received:", payload);
+          loadChats();
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user,loading]);
 
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      from: "Seller",
-      text: `Hi, I'm the seller for "${bookTitle}". Let me know how you'd like to arrange the exchange.`,
-    },
-  ]);
-  const [newMessage, setNewMessage] = useState("");
+  useEffect(() => {
+    async function reset() {
+      if (currentChatroom) {
+          await resetUnread(currentChatroom?.id);
+          setChatrooms((prevChatrooms) =>
+            prevChatrooms.map((chatroom) =>
+              chatroom.id === currentChatroom.id
+                ? { ...chatroom, unread_count: 0 }
+                : chatroom
+            )
+          );
+      }
+    }
+    reset();
+    console.log("Current chatroom changed:", currentChatroom);
+  }, [currentChatroom]);
+  console.log(chatrooms);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const trimmed = newMessage.trim();
-    if (!trimmed) return;
-
-    setMessages((prev) => [...prev, { from: "You", text: trimmed }]);
-    setNewMessage("");
-  };
+  if (!user) {
+    return <p>Please log in to access your chats.</p>;
+  }
 
   return (
     <>
@@ -49,98 +116,14 @@ function ChatPage() {
                   />
                 </div>
 
-                <div className="list-group">
-                  <div className="list-group-item d-flex align-items-center">
-                    <img
-                      src={Profile}
-                      className="rounded-circle me-2"
-                      alt="Profile"
-                      width={40}
-                      height={40}
-                    />
-                    <div>
-                      <div className="fw-bold">{sellerName}</div>
-                      <small className="text-muted">
-                        Chat about: {bookTitle}
-                      </small>
-                    </div>
-                  </div>
-                </div>
+                <ChatList chatrooms={chatrooms} setCurrentChatroom={setCurrentChatroom} />
+
               </div>
             </div>
           </div>
 
           {/* Right side: chat window */}
-          <div className="col-md-8">
-            {/* Chat header */}
-            <div className="d-flex align-items-center mb-3">
-              <img
-                src={Profile}
-                className="rounded-circle me-2"
-                alt="Profile"
-                width={40}
-                height={40}
-              />
-              <div>
-                <div className="fw-bold">{sellerName}</div>
-                <small className="text-muted">Discussing: {bookTitle}</small>
-              </div>
-            </div>
-
-            {/* Messages area */}
-            <div
-              className="card mb-3"
-              style={{ height: "350px", overflowY: "auto" }}
-            >
-              <div className="card-body">
-                {messages.map((msg, idx) => (
-                  <div
-                    key={idx}
-                    className={`d-flex mb-3 ${
-                      msg.from === "You"
-                        ? "justify-content-end"
-                        : "justify-content-start"
-                    }`}
-                  >
-                    <div
-                      className="card"
-                      style={{
-                        maxWidth: "70%",
-                        backgroundColor:
-                          msg.from === "You" ? "#0d6efd" : "#1b2545",
-                        color: "white",
-                      }}
-                    >
-                      <div className="card-body p-2">
-                        <div className="small fw-bold mb-1">{msg.from}</div>
-                        <div className="mb-0">{msg.text}</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Input area – button spans its row */}
-            <form onSubmit={handleSubmit}>
-              <div className="row g-2">
-                <div className="col-12">
-                  <textarea
-                    className="form-control"
-                    rows={2}
-                    placeholder="Type your message..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                  />
-                </div>
-                <div className="col-12">
-                  <button type="submit" className="btn btn-primary w-100">
-                    Send
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
+          <ChatWindow chatroom={currentChatroom} />
         </div>
       </div>
     </>

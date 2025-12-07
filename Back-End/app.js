@@ -9,16 +9,14 @@ import cors from 'cors';
 import indexRouter from './routes/index.js';
 import authRouter from './routes/auth.js';
 import textbookRouter from './routes/textbook.js';
-import dealRouter from './routes/deal.js';
+import tradeRouter from './routes/trade.js';
+import chatroomRouter from './routes/chatroom.js';
+import messageRouter from './routes/message.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-
-// view engine setup
-app.set('views', join(__dirname, 'views'));
-app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 app.use(json());
@@ -30,7 +28,9 @@ app.use(expressStatic(join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', authRouter);
 app.use('/textbooks', textbookRouter);
-app.use('/deal', dealRouter);
+app.use('/trade', tradeRouter);
+app.use('/chatroom', chatroomRouter);
+app.use('/message', messageRouter);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Express.js server and supabase is running' });

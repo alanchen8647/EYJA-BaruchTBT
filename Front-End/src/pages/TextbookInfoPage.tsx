@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getTextbookById, expressInterest } from "../api.jsx";
+import { getTextbookById, expressInterest} from "../api.jsx";
 import {useNavigate, useParams } from "react-router-dom";
 import placeholderImage from "../../images/placeholder.jpg";
 import {useAuth} from "../context/AuthContext.jsx";
@@ -31,19 +31,24 @@ function TextbookInfoPage() {
   console.log("Book details:", book);
 
   const handleExpressInterest = async () => {
-    if (user && book) {
-      if (user.id === book.seller_id) {
-        alert("You cannot express interest in your own textbook.");
-        return;
+    if (!user) {
+      alert("Please log in to express interest in trading.");
+      navigate("/login");
+      return;
+    }
+    try {
+      if (book) {
+        const response = await expressInterest(user.id, book.seller_id, book.id);
+        if (response.success) {
+          alert("Trade interest expressed successfully!");
+        } else {
+          alert("Failed to express trade interest.");
+        }
       }
-      try {
-        const data = { buyer_id: user.id, seller_id: book.seller_id, textbook_id: book.id };
-        await expressInterest(data);
-      } catch (error) {
-        console.error("Error expressing interest:", error);
-      } finally {
-        navigate("/Chat", { state: { book } });
-      }
+      
+  } catch (error) {
+      console.error("Error expressing interest:", error);
+      alert("An error occurred while expressing interest.");
     }
   };
 
