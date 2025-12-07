@@ -22,7 +22,7 @@ export default function PendingTrade({chatroom}){
 
     return (
            <div className="flex-grow-1">
-                    <div className="fw-bold text-black">{user.id === chatroom.buyer_id ? `waiting for ${chatroom.seller.seller_name} to accept` : `${chatroom.buyer.buyer_name} wants to trade`}</div>
+                    <div className="fw-bold text-black">{user.id === chatroom.buyer_id ? `waiting for ${chatroom.seller.user_name} to accept` : `${chatroom.buyer.user_name} wants to trade`}</div>
                     <small className="text-muted">Book: {chatroom.textbook.title}</small>
 
                     {chatroom.buyer_id === user.id ? (

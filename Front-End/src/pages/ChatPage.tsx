@@ -16,7 +16,8 @@ type Message = {
 function ChatPage() {
   const [chatrooms, setChatrooms] = useState([]);
   const [currentChatroom, setCurrentChatroom] = useState(null);
-  const { user, loading } = useAuth();
+  const { user, loading, authToken } = useAuth();
+
   async function loadChats() {
     const token = (await supabase.auth.getSession()).data.session?.access_token;
     if (token) {
@@ -93,6 +94,10 @@ function ChatPage() {
     console.log("Current chatroom changed:", currentChatroom);
   }, [currentChatroom]);
   console.log(chatrooms);
+
+  if (authToken === null) {
+    return <p>Token Expired Please log in again.</p>;
+  }
 
   if (!user) {
     return <p>Please log in to access your chats.</p>;
