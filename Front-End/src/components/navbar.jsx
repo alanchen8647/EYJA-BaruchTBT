@@ -2,13 +2,15 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { supabase } from "../supabaseClient.js";
+import { useNavigate} from "react-router-dom";
 
 export default function Navbar() {
   const auth = useAuth();
   const location = useLocation();
-
+  const navigate = useNavigate();
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    navigate("/Login");
   }
 
   const isActive = (path) => {

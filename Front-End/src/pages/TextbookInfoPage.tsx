@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { getTextbookById } from "../api.jsx";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { getTextbookById, expressInterest} from "../api.jsx";
+import {useNavigate, useParams } from "react-router-dom";
 import placeholderImage from "../../images/placeholder.jpg";
+import {useAuth} from "../context/AuthContext.jsx";
+
 
 function TextbookInfoPage() {
   const navigate = useNavigate();
+  const user = useAuth().user;
   const {id} = useParams();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,6 +30,30 @@ function TextbookInfoPage() {
     };
     fetchBook();
   }, [id]);
+
+  console.log("Book details:", book);
+
+  const handleExpressInterest = async () => {
+    if (!user) {
+      alert("Please log in to express interest in trading.");
+      navigate("/login");
+      return;
+    }
+    try {
+      if (book) {
+        const response = await expressInterest(user.id, book.seller_id, book.id);
+        if (response.success) {
+          alert("Trade interest expressed successfully!");
+        } else {
+          alert("Failed to express trade interest.");
+        }
+      }
+      
+  } catch (error) {
+      console.error("Error expressing interest:", error);
+      alert("An error occurred while expressing interest.");
+    }
+  };
 
   //If no textbook is selected, show a message and a button to go back home.
   if (book === null) {
@@ -118,9 +145,9 @@ function TextbookInfoPage() {
           {/* The button sends the user to the chat page to chat about a specific textbook */}
           <button
             className="btn btn-outline-secondary w-100"
-            onClick={() => navigate("/Chat", { state: { book } })}
+            onClick={() => handleExpressInterest()}
           >
-            Exchange page
+            Sent Trade Interest
           </button>
         </div>
       </div>

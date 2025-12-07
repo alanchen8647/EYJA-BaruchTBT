@@ -13,7 +13,7 @@ import SellPage from "./pages/SellPage.tsx";
 // import DiscussionPage from "./DiscussionPage.tsx";
 import TextbookInfoPage from "./pages/TextbookInfoPage.tsx";
 // import CommentPage from "./CommentPage.tsx";
-// import ChatPage from "./ChatPage.tsx";
+import ChatPage from "./pages/ChatPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 
 
@@ -133,7 +133,7 @@ function App() {
           }
         /> */}
 
-        {/* <Route path="/Chat" element={<ChatPage />} /> */}
+        <Route path="/Chat" element={<ChatPage />} />
 
         <Route path="/Login" element={<LoginPage />} />
       </Routes>

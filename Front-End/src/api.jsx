@@ -82,3 +82,112 @@ const uploadImages = async (imageFile, textbookId) => {
 
     return { url: publicURLData.publicUrl };
 }
+
+export async function expressInterest(buyerId, sellerId, textbookId) {
+    const res = await fetch(`${API.baseUrl}trade/request`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ buyer_id: buyerId, seller_id: sellerId, textbook_id: textbookId }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to express interest");
+    }
+    const data = await res.json();
+    return data;
+}
+
+export async function getChatrooms(token) {
+    const res = await fetch(`${API.baseUrl}chatroom/`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    const data = await res.json();
+    return data.chatrooms;
+}
+
+export async function acceptTrade(chatRoomId) {
+    const res = await fetch(`${API.baseUrl}trade/accept`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ chat_room_id: chatRoomId }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to accept trade");
+    }
+    const data = await res.json();
+    return data;
+}
+
+export async function declineTrade(chatRoomId) {
+    const res = await fetch(`${API.baseUrl}trade/decline`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ chat_room_id: chatRoomId }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to decline trade");
+    }
+    const data = await res.json();
+    return data;
+}
+
+export async function sendMessage(roomId, message) {
+    const res = await fetch(`${API.baseUrl}message/`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ room_id: roomId, message: message }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to send message");
+    }
+    const data = await res.json();
+    return data;
+}
+
+export async function resetUnread(chatRoomId) {
+    const token = await supabase.auth.getSession().then(({data}) => data.session?.access_token);
+    const res = await fetch(`${API.baseUrl}message/read`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ chat_room_id: chatRoomId }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to reset unread count");
+    }
+    const data = await res.json();
+    return data;
+}
+
+export async function loadMessages(roomId) {
+    const token = await supabase.auth.getSession().then(({data}) => data.session?.access_token);
+    const res = await fetch(`${API.baseUrl}message/load`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ room_id: roomId }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to load messages");
+    }
+    const data = await res.json();
+    return data.messages;
+}
