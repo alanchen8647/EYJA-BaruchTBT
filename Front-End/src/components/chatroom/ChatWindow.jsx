@@ -128,17 +128,36 @@ export default function ChatWindow({ chatroom }) {
   return (
     <div className="col-md-8">
       {/* Chat header */}
-      <div className="d-flex align-items-center mb-3">
-        <img
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <div className="d-flex">
+          <img
           src={DefaultAvatar}
           className="rounded-circle me-2"
           alt="Profile"
           width={40}
           height={40}
-        />
-        <div>
-          <div className="fw-bold">{user.id === chatroom.buyer_id ? chatroom.seller.user_name : chatroom.buyer.user_name}</div>
-          <small className="text-muted">Discussing: {chatroom?.textbook?.title}</small>
+          />
+          <div>
+            <div className="fw-bold">{user.id === chatroom.buyer_id ? chatroom.seller.user_name : chatroom.buyer.user_name}</div>
+            <small className="text-muted">Discussing: {chatroom?.textbook?.title}</small>
+          </div>
+        </div>
+        
+        <div className="ms-3 flex-grow-1">
+          <div className="card">
+            <div className="card-body d-flex justify-content-between">
+              <div>
+                <p>Seller confirmed: x</p>
+                <p>Buyer confirmed: x</p>
+              </div>
+              <div>
+                <p>Trade confirm</p>
+                <div>
+                  <button type="button" className="btn btn-primary">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
