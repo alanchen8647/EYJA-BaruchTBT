@@ -117,7 +117,7 @@ function TextbookInfoPage() {
             )}
             {book.price && (
               <p className="mb-1">
-                <strong>Price:</strong> {book.price}
+                <strong>Price:</strong> ${book.price}
               </p>
             )}
 

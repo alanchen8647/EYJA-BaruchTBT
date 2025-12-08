@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function TextbookSearch({ textbooks, setSearchResults }) {
+export function TextbookSearch({ textbooks, setSearchResults }) {
     const [query, setQuery] = useState("");
     const trimmedQuery = query.trim().toLowerCase();
     //Filters textbooks based on the search query.
