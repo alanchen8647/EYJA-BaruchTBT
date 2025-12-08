@@ -1,10 +1,12 @@
-import placeholderImage from "../../images/placeholder.jpg";
+import PlaceholderImage from "../../images/placeholder.jpg";
+import Textbooks from "../../images/textbooks.jpg";
+import Textbooks1 from "../../images/textbooks1.jpg";
 
 export default function TextbookImgCarousel({ images }) {
   // If no images are passed in, fall back to 3 placeholders
   const slides = images && images.length > 0
     ? images
-    : [placeholderImage, placeholderImage, placeholderImage];
+    : [PlaceholderImage];
 
   const carouselId = "textbookCarousel";
 

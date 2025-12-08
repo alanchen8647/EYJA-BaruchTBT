@@ -92,7 +92,7 @@ function TextbookInfoPage() {
             className="img-fluid"
             style={{ maxHeight: "400px", objectFit: "contain" }}
           /> */}
-          <TextbookImgCarasol image={book.images_url}/>
+          <TextbookImgCarasol images={book.images_url}/>
         </div>
       </div>
 
