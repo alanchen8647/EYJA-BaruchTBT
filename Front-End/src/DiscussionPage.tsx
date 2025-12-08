@@ -8,7 +8,7 @@ type Post = {
   body: string;
 };
 
-function DiscussionPage() {
+export function DiscussionPage() {
   fetch("/api/test-get")
     .then((response) => response.json())
     .then((data) => console.log(data));
@@ -60,31 +60,9 @@ can get it as soon as possible.`,
         <h1>Community Page</h1>
       </div>
 
-      {/*Allows the user to click into the discussion cards so that they can leave comments
-      under specific topics.*/}
-      {posts.map((post, index) => (
-        <div className="container my-5" key={index}>
-          <Link
-            to="/Comment"
-            state={{ post }}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <div
-              className="card"
-              style={{ width: "18rem", border: "3px solid black" }}
-            >
-              <div className="card-body">
-                <h5 className="card-title">{post.title}</h5>
-                <p className="card-text">{post.body}</p>
-              </div>
-            </div>
-          </Link>
-        </div>
-      ))}
-
       {/*Lets the user add a post in the discussion page. The user can exit out of the 
       comment they're trying to make.*/}
-      <div className="container mb-3">
+      <div className="container mb-3 ms-0">
         <button
           className="btn btn-primary"
           onClick={() => setShowForm((prev) => !prev)}
@@ -140,6 +118,89 @@ can get it as soon as possible.`,
           </form>
         </div>
       )}
+
+      {/*Allows the user to click into the discussion cards so that they can leave comments
+      under specific topics.*/}
+      <div className="d-flex justify-content-start gap-5 ms-3">
+        {posts.map((post, index) => (
+          <div className="card my-5" key={index} style={{ border: "none" }}>
+            <Link
+              to="/Comment"
+              state={{ post }}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <div
+                className="card"
+                style={{ width: "18rem", border: "3px solid black" }}
+              >
+                <div className="card-body">
+                  <h5 className="card-title text-decoration-underline">{post.title}</h5>
+                  <p className="card-text text-black mt-3">{post.body}</p>
+                </div>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+      
+
+      
+      {/* <div className="container mb-3 ms-0">
+        <button
+          className="btn btn-primary"
+          onClick={() => setShowForm((prev) => !prev)}
+        >
+          {showForm ? "Cancel" : "Make a Post"}
+        </button>
+      </div>
+
+      {showForm && (
+        <div className="container my-3">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label
+                htmlFor="topicInput"
+                className="form-label"
+                style={{ fontWeight: "bold" }}
+              >
+                Topic
+              </label>
+              <input
+                type="text"
+                id="topicInput"
+                className="form-control"
+                placeholder="Enter the discussion topic"
+                required
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label
+                htmlFor="contentTextarea"
+                className="form-label"
+                style={{ fontWeight: "bold" }}
+              >
+                Post
+              </label>
+              <textarea
+                id="contentTextarea"
+                className="form-control"
+                rows={4}
+                placeholder="Write your post here..."
+                required
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </div>
+
+            <button type="submit" className="btn btn-success">
+              Post
+            </button>
+          </form>
+        </div>
+      )} */}
     </>
   );
 }

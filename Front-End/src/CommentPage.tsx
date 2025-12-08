@@ -8,7 +8,7 @@ interface CommentPageProps {
   addComment: (postTitle: string, comment: string) => void;
 }
 
-function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
+export function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
   fetch("/api/test-get")
     .then((response) => response.json())
     .then((data) => console.log(data));
@@ -59,8 +59,8 @@ function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
           style={{ width: "18rem", border: "3px solid black" }}
         >
           <div className="card-body">
-            <h5 className="card-title">{post.title}</h5>
-            <p className="card-text">{post.body}</p>
+            <h5 className="card-title" style={{ textDecoration: "underline" }}>{post.title}</h5>
+            <p className="card-text text-black">{post.body}</p>
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@ function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
             style={{ width: "18rem", border: "3px solid black" }}
           >
             <div className="card-body">
-              <p className="card-text">{text}</p>
+              <p className="card-text text-black">{text}</p>
             </div>
           </div>
         </div>
