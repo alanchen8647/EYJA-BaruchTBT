@@ -29,7 +29,7 @@ Resources:
   ExpressFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: backend/
+      CodeUri: Back-End/
       Handler: lambda.handler    # lambda.js exports.handler
       Description: Express app behind HTTP API
       Events:
@@ -96,19 +96,17 @@ Resources:
             - GET
             - HEAD
             - OPTIONS
-            - PUT
-            - POST
-            - PATCH
-            - DELETE
           CachedMethods:
             - GET
             - HEAD
           ForwardedValues:
-            QueryString: true
+            QueryString: false
             Headers:
-              - '*'
+              - Origin
+              - Access-Control-Request-Method
+              - Access-Control-Request-Headers
             Cookies:
-              Forward: all
+              Forward: none
           MinTTL: 0
           DefaultTTL: 0
           MaxTTL: 0
