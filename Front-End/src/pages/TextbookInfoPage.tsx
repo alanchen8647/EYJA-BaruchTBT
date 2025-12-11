@@ -122,8 +122,11 @@ function TextbookInfoPage() {
                   <span className="badge bg-warning text-dark fs-6">{book.condition || "Used"}</span>
                 </div>
 
+                <div className="mb-2">
+                  <strong>Subject:</strong> {book.subject}
+                </div>
                 <div className="mb-3">
-                  <strong>Course:</strong> {book.subject} {book.course_num}
+                  <strong>Course Number:</strong> {book.course_num}
                 </div>
               </div>
 
