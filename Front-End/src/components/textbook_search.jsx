@@ -29,7 +29,7 @@ export function TextbookSearch({ textbooks, setSearchResults }) {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                 />
-                <button className="btn btn-outline-primary" type="submit">
+                <button className="btn btn-warning" type="submit">
                     Search
                 </button>
             </form>

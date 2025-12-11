@@ -19,7 +19,7 @@ export default function Navbar() {
   
   return (
     <header className="sticky-top">
-      <nav className="navbar navbar-expand-lg">
+      <nav className="navbar navbar-expand-lg navbar-custom">
         <div className="container">
           <Link className="navbar-brand" to="/">
             Baruch TBT
@@ -34,8 +34,9 @@ export default function Navbar() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon" style={{ filter: 'invert(1)' }}></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
+
 
           <div
             className="collapse navbar-collapse"
