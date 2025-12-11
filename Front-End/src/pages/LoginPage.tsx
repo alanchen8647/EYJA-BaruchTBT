@@ -64,8 +64,8 @@ function LoginPage() {
   //Renders the login/sign-up form with email and password fields.
   return (
     <div className="container d-flex align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
-      <div className="glass-panel p-5" style={{ maxWidth: '500px', width: '100%' }}>
-        <h2 className="text-center mb-4">{SignInOrSignUp}</h2>
+      <div className="card shadow p-5 border-0" style={{ maxWidth: '500px', width: '100%' }}>
+        <h2 className="text-center mb-4 text-primary">{SignInOrSignUp}</h2>
         <form>
           <div className="form-outline mb-4">
             <label
@@ -80,7 +80,7 @@ function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               id="form2Example1"
-              className="form-control glass-input"
+              className="form-control"
               required
             />
           </div>
@@ -96,7 +96,7 @@ function LoginPage() {
             <input
               type="password"
               id="form2Example2"
-              className="form-control glass-input"
+              className="form-control"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -116,11 +116,11 @@ function LoginPage() {
         <div className="text-center">
           {SignInOrSignUp === "Sign In" ? (
             <p className="mb-0 text-muted">
-              Don't have an account? <a href="#" className="text-primary fw-bold text-decoration-none" onClick={() => setSignInOrSignUp("Sign Up")}>Sign Up</a>
+              Don't have an account? <a href="#" className="fw-bold text-decoration-none" style={{ color: 'var(--secondary-color)' }} onClick={() => setSignInOrSignUp("Sign Up")}>Sign Up</a>
             </p>
           ) : (
             <p className="mb-0 text-muted">
-              Already have an account? <a href="#" className="text-primary fw-bold text-decoration-none" onClick={() => setSignInOrSignUp("Sign In")}>Sign In</a>
+              Already have an account? <a href="#" className="fw-bold text-decoration-none" style={{ color: 'var(--secondary-color)' }} onClick={() => setSignInOrSignUp("Sign In")}>Sign In</a>
             </p>
           )}
         </div>
