@@ -123,13 +123,22 @@ function App() {
           }
         /> */}
         <Route path="/sell" element={<SellPage />} />
-        <Route path="/Discussion" element={<DiscussionPage />} />
+        <Route
+          path="/Discussion"
+          element={
+            <DiscussionPage
+              commentsByPost={commentsByPost}
+              addComment={addComment}
+            />
+          }
+        />
 
         <Route
           path="/TextbookInfo/:id"
           element={<TextbookInfoPage />}
         />
 
+        {/* CommentPage route might be redundant now, but keeping for safety for a moment */}
         <Route
           path="/Comment"
           element={
