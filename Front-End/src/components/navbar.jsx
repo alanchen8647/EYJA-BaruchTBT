@@ -43,6 +43,11 @@ export default function Navbar() {
           >
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
               <li className="nav-item">
+                <Link className={`nav-link ${isActive('/')}`} to="/">
+                  Marketplace
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className={`nav-link ${isActive('/sell')}`} to="/sell">
                   Sell
                 </Link>
