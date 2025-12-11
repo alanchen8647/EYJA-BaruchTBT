@@ -10,7 +10,7 @@ import Navbar from "./components/navbar.jsx";
 import HomePage from "./pages/HomePage.jsx";
 // import CartPage from "./CartPage.tsx";
 import SellPage from "./pages/SellPage.tsx";
-// import DiscussionPage from "./DiscussionPage.tsx";
+import DiscussionPage from "./DiscussionPage";
 import TextbookInfoPage from "./pages/TextbookInfoPage.tsx";
 // import CommentPage from "./CommentPage.tsx";
 import ChatPage from "./pages/ChatPage.tsx";
@@ -116,7 +116,7 @@ function App() {
           }
         /> */}
         <Route path="/sell" element={<SellPage />} />
-        {/* <Route path="/Discussion" element={<DiscussionPage />} /> */}
+        <Route path="/Discussion" element={<DiscussionPage />} />
 
         <Route
           path="/TextbookInfo/:id"
