@@ -191,3 +191,34 @@ export async function loadMessages(roomId) {
     const data = await res.json();
     return data.messages;
 }
+
+export async function loaddeal(chatRoomId) {
+    const token = await supabase.auth.getSession().then(({data}) => data.session?.access_token);
+    const res = await fetch(`${API.baseUrl}trade/deal/${chatRoomId}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) {
+        throw new Error("Failed to load deal");
+    }
+    const data = await res.json();
+    return data.deal;
+}
+
+export async function confirmDeal(chatRoomId) {
+    const res = await fetch(`${API.baseUrl}trade/deal/confirm`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ chat_room_id: chatRoomId }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to confirm deal");
+    }
+    const data = await res.json();
+    return data;
+}
