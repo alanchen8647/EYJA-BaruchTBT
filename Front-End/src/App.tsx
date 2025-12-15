@@ -8,7 +8,7 @@ import Navbar from "./components/navbar.jsx";
 import HomePage from "./pages/HomePage.jsx";
 // import CartPage from "./CartPage.tsx";
 import SellPage from "./pages/SellPage.tsx";
-import DiscussionPage from "./DiscussionPage.tsx"
+import DiscussionPage from "./pages/DiscussionPage.tsx"
 import TextbookInfoPage from "./pages/TextbookInfoPage.tsx";
 import CommentPage from "./CommentPage.tsx";
 import ChatPage from "./pages/ChatPage.tsx";
@@ -93,16 +93,6 @@ function App() {
   // };
   // const allTextbooks: Textbook[] = [staticTextbook, ...textbooks];
 
-  const [commentsByPost, setCommentsByPost] = useState<{ [title: string]: string[] }>({});
-
-  // This function will be passed to CommentPage so it can add new comments
-  const addComment = (postTitle: string, comment: string) => {
-    setCommentsByPost((prev) => ({
-      ...prev,
-      [postTitle]: [...(prev[postTitle] || []), comment],
-    }));
-  };
-
   return (
     <BrowserRouter>
       <Navbar />
@@ -126,10 +116,7 @@ function App() {
         <Route
           path="/Discussion"
           element={
-            <DiscussionPage
-              commentsByPost={commentsByPost}
-              addComment={addComment}
-            />
+            <DiscussionPage/>
           }
         />
 
@@ -142,10 +129,7 @@ function App() {
         <Route
           path="/Comment"
           element={
-            <CommentPage
-              commentsByPost={commentsByPost}
-              addComment={addComment}
-            />
+            <CommentPage/>
           }
         />
 

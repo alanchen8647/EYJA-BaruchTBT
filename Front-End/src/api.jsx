@@ -222,3 +222,63 @@ export async function confirmDeal(chatRoomId) {
     const data = await res.json();
     return data;
 }
+
+export async function getCommunityPosts() {
+    const res = await fetch(`${API.baseUrl}community/`,{
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+        },
+    });
+    if (!res.ok) {
+        throw new Error("Failed to fetch community posts");
+    }
+    const data = await res.json();
+    return data.communities;
+}
+
+export async function createCommunityPost(title, content) {
+    const res = await fetch(`${API.baseUrl}community/`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify( title, content),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to create community post");
+    }
+    const data = await res.json();
+    return data.post;
+}
+
+export async function getPostComment(postId, content) {
+    const res = await fetch(`${API.baseUrl}community/${postId}/comments`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+        },
+    });
+    if (!res.ok) {
+        throw new Error("Failed to fetch post comments");
+    }
+    const data = await res.json();
+    return data.comments;
+} 
+
+export async function createPostComment(postId, content) {
+    const res = await fetch(`${API.baseUrl}community/${postId}/comments`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to create post comment");
+    }
+    const data = await res.json();
+    return data.comment;
+}
