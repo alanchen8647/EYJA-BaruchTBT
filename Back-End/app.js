@@ -12,6 +12,7 @@ import textbookRouter from './routes/textbook.js';
 import tradeRouter from './routes/trade.js';
 import chatroomRouter from './routes/chatroom.js';
 import messageRouter from './routes/message.js';
+import communityRouter from './routes/community.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -31,6 +32,7 @@ app.use('/textbooks', textbookRouter);
 app.use('/trade', tradeRouter);
 app.use('/chatroom', chatroomRouter);
 app.use('/message', messageRouter);
+app.use('/community', communityRouter);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Express.js server and supabase is running' });

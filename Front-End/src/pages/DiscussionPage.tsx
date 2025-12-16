@@ -1,31 +1,31 @@
-import { useState } from "react";
-import "./App.css";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-// import { Link } from "react-router-dom";
+import { useState , useEffect} from "react";
+import {getCommunityPosts, createCommunityPost, getPostComment, createPostComment } from "../api.jsx";
+
 
 type Post = {
+  id?: number;
   title: string;
-  body: string;
+  content: string;
 };
 
-interface DiscussionPageProps {
-  commentsByPost: { [title: string]: string[] };
-  addComment: (postTitle: string, comment: string) => void;
-}
 
-export function DiscussionPage({ commentsByPost, addComment }: DiscussionPageProps) {
+
+export function DiscussionPage() {
+  const [comments, setComments] = useState(null);
   const [posts, setPosts] = useState<Post[]>([
     {
+      id: 1,
       title: "Best textbook for studying art history?",
-      body: `Hey guys, I'm currently taking an art history class where we go over art from 
+      content: `Hey guys, I'm currently taking an art history class where we go over art from 
 the Paleolithic era to the age of the Roman Empire. I already have a textbook, but I'm
 very interested in this topic and would like to study more about it on my personal time. 
 Does anyone know any textbooks sold on this website that's good for studying art history?`,
     },
     {
+      id: 2,
       title:
         'Anyone willing to trade an "Advanced Calculus Fundamentals of Mathematics by Carlos Polanco" textbook for a "calculus by Gilbert Strang" textbook?',
-      body: `So, I made a stupid mistake and bought "calculus by Gilbert Strang" for my advanced calculus class, 
+      content: `So, I made a stupid mistake and bought "calculus by Gilbert Strang" for my advanced calculus class, 
 when I should have bought "Advanced Calculus Fundamentals of Mathematics by Carlos Polanco". I'm 
 not gonna lie, I really don't want to spend more money and wait for a new textbook. I know that this 
 sort of defeats the purpose of this website, but is anyone willing to trade their textbook for mine? 
@@ -33,31 +33,53 @@ My textbook is still is mint condition and I'm available for a few days, so anyo
 can get it as soon as possible.`,
     },
   ]);
-
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newTopic, setNewTopic] = useState("");
   const [newContent, setNewContent] = useState("");
   const [commentText, setCommentText] = useState("");
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const fetchedPosts = await getCommunityPosts();
+      setPosts(fetchedPosts);
+    }
+    fetchPosts();
+  }, []);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      if (selectedPost) {
+        const fetchedComments = await getPostComment(selectedPost.id);
+        setComments(fetchedComments || []);
+      }
+    }
+    fetchComments();
+  }, [selectedPost]);
+
   const handleCreatePost = (e: React.FormEvent) => {
     e.preventDefault();
-    const newPost: Post = { title: newTopic, body: newContent };
+    const newPost: Post = {
+      title: newTopic,
+      content: newContent,
+    };
+    createCommunityPost(newPost);
     setPosts((prev) => [newPost, ...prev]);
     setNewTopic("");
     setNewContent("");
     setShowCreateForm(false);
-    setSelectedPost(newPost); // Auto-select the new post
+    setSelectedPost(newPost);
   };
 
   const handlePostComment = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedPost || !commentText.trim()) return;
-    addComment(selectedPost.title, commentText.trim());
+    createPostComment(selectedPost.id, commentText.trim());
+    
     setCommentText("");
   };
 
-  const currentComments = selectedPost ? (commentsByPost[selectedPost.title] || []) : [];
+  const currentComments = selectedPost ? (comments || []) : [];
 
   return (
     <div className="container-fluid py-4" style={{ height: "calc(100vh - 70px)" }}>
@@ -83,7 +105,7 @@ can get it as soon as possible.`,
                 style={{ cursor: 'pointer' }}
               >
                 <h6 className="fw-bold mb-1 text-truncate">{post.title}</h6>
-                <p className="small text-muted mb-0 text-truncate">{post.body}</p>
+                <p className="small text-muted mb-0 text-truncate">{post.content}</p>
               </div>
             ))}
           </div>
@@ -134,7 +156,7 @@ can get it as soon as possible.`,
               {/* Header Post */}
               <div className="p-4 bg-white border-bottom shadow-sm overflow-auto" style={{ maxHeight: '40%' }}>
                 <h2 className="fw-bold text-primary mb-3">{selectedPost.title}</h2>
-                <p className="lead text-dark" style={{ fontSize: '1.05rem', lineHeight: '1.6' }}>{selectedPost.body}</p>
+                <p className="lead text-dark" style={{ fontSize: '1.05rem', lineHeight: '1.6' }}>{selectedPost.content}</p>
               </div>
 
               {/* Comments Area - Flexible/Scrollable */}
@@ -148,15 +170,15 @@ can get it as soon as possible.`,
                       No comments yet. Start the conversation!
                     </div>
                   ) : (
-                    currentComments.map((text, index) => (
-                      <div key={index} className="d-flex gap-3">
+                    currentComments.map((comment: any,id) => (
+                      <div key={id} className="d-flex gap-3">
                         <div className="flex-shrink-0">
                           <div className="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
                             <i className="bi bi-person-fill"></i>
                           </div>
                         </div>
                         <div className="bg-white p-3 rounded shadow-sm border border-light-subtle" style={{ maxWidth: '85%' }}>
-                          {text}
+                          {comment?.content}
                         </div>
                       </div>
                     ))
