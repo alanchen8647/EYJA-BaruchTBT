@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import Profile from "../../images/profile.png";
+import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient.js";
 import { getChatrooms } from "../api.jsx";
 import ChatList from "../components/chatroom/ChatRoomList.jsx";
@@ -8,14 +6,9 @@ import { useAuth } from "../context/AuthContext.jsx";
 import ChatWindow from "../components/chatroom/ChatWindow.jsx";
 import { resetUnread } from "../api.jsx";
 
-type Message = {
-  from: "You" | "Seller";
-  text: string;
-};
-
 function ChatPage() {
-  const [chatrooms, setChatrooms] = useState([]);
-  const [currentChatroom, setCurrentChatroom] = useState(null);
+  const [chatrooms, setChatrooms] = useState<any[]>([]);
+  const [currentChatroom, setCurrentChatroom] = useState<any>(null);
   const { user, loading, authToken } = useAuth();
 
   async function loadChats() {
@@ -40,7 +33,7 @@ function ChatPage() {
           table: "chat_room",
           filter: `buyer_id=eq.${user.id}`,
         },
-        (payload) => {
+        (payload: any) => {
           console.log("Buyer update received:", payload);
           loadChats();
         }
@@ -53,7 +46,7 @@ function ChatPage() {
           table: "chat_room",
           filter: `seller_id=eq.${user.id}`,
         },
-        (payload) => {
+        (payload: any) => {
           console.log("Seller update received:", payload);
           loadChats();
         }
@@ -66,7 +59,7 @@ function ChatPage() {
           table: "chat_room_user_status",
           filter: `user_id=eq.${user.id}`,
         },
-        (payload) => {
+        (payload: any) => {
           console.log("Seller update received:", payload);
           loadChats();
         }
@@ -75,25 +68,24 @@ function ChatPage() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user,loading]);
+  }, [user, loading]);
 
   useEffect(() => {
     async function reset() {
       if (currentChatroom) {
-          await resetUnread(currentChatroom?.id);
-          setChatrooms((prevChatrooms) =>
-            prevChatrooms.map((chatroom) =>
-              chatroom.id === currentChatroom.id
-                ? { ...chatroom, unread_count: 0 }
-                : chatroom
-            )
-          );
+        await resetUnread(currentChatroom?.id);
+        setChatrooms((prevChatrooms) =>
+          prevChatrooms.map((chatroom) =>
+            chatroom.id === currentChatroom.id
+              ? { ...chatroom, unread_count: 0 }
+              : chatroom
+          )
+        );
       }
     }
     reset();
     console.log("Current chatroom changed:", currentChatroom);
   }, [currentChatroom]);
-  console.log(chatrooms);
 
   if (authToken === null) {
     return <p>Token Expired Please log in again.</p>;

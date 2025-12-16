@@ -1,9 +1,12 @@
 
 import { supabase } from "./supabaseClient.js";
+
+// API utility functions for textbook operations
 const API = {
   // Base URL of the backend API
   baseUrl: "http://localhost:3000/",}
 
+// Fetch the list of textbooks from the backend
 export async function getTextbookList() {
     const res = await fetch(`${API.baseUrl}textbooks`);
     if (!res.ok) {
@@ -13,6 +16,7 @@ export async function getTextbookList() {
     return data;
 }
 
+// Fetch details of a specific textbook by its ID
 export async function getTextbookById(id) {
     const res = await fetch(`${API.baseUrl}textbooks/${id}`);
     if (!res.ok) {
@@ -22,6 +26,7 @@ export async function getTextbookById(id) {
     return data;
 }
 
+// Create a new textbook entry in the backend
 export async function createTextbook(formData) {
     const res = await fetch(`${API.baseUrl}textbooks/`, {
         method: "POST",
@@ -46,6 +51,7 @@ export async function createTextbook(formData) {
     return data;
 }
 
+// Update textbook images URLs in the backend
 const updateItemImages = async (textbookId, imageURLs) => {
     const res = await fetch(`${API.baseUrl}textbooks/${textbookId}`, {
         method: "PATCH",
@@ -56,6 +62,7 @@ const updateItemImages = async (textbookId, imageURLs) => {
     });
 }
 
+// Upload images to Supabase storage and return their public URLs
 const uploadImages = async (imageFile, textbookId) => {
     const fileExt = imageFile.name.split('.').pop();
     const fileName = `${textbookId}/${Date.now()}.${fileExt}`;
@@ -183,4 +190,35 @@ export async function loadMessages(roomId) {
     }
     const data = await res.json();
     return data.messages;
+}
+
+export async function loaddeal(chatRoomId) {
+    const token = await supabase.auth.getSession().then(({data}) => data.session?.access_token);
+    const res = await fetch(`${API.baseUrl}trade/deal/${chatRoomId}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) {
+        throw new Error("Failed to load deal");
+    }
+    const data = await res.json();
+    return data.deal;
+}
+
+export async function confirmDeal(chatRoomId) {
+    const res = await fetch(`${API.baseUrl}trade/deal/confirm`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ chat_room_id: chatRoomId }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to confirm deal");
+    }
+    const data = await res.json();
+    return data;
 }

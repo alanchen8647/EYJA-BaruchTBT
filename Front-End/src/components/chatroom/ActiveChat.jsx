@@ -1,11 +1,11 @@
 import {useAuth} from "../../context/AuthContext.jsx";
 export default function ActiveChat ({ chatroom }) {
-  console.log("ActiveChat chatroom:", chatroom);
     const {user} = useAuth();
     const otherUserName = user.id === chatroom.buyer_id ? chatroom.seller.user_name : chatroom.buyer.user_name;
     const bookTitle = chatroom.textbook ? chatroom.textbook.title : "Unknown Book";
     const lastMessage = chatroom.lm ? chatroom.lm.message
         : null;
+    const chatRoomStatus = chatroom.status;
   return (
     <>
             <div className="flex-grow-1">
@@ -20,6 +20,11 @@ export default function ActiveChat ({ chatroom }) {
                     {lastMessage}
                 </small>
                 )}
+
+                {chatRoomStatus === "completed" && (
+                <span className="badge bg-secondary mt-1">Completed Trad</span>
+                )}
+
             </div>
     </>
   )

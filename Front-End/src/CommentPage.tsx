@@ -8,7 +8,7 @@ interface CommentPageProps {
   addComment: (postTitle: string, comment: string) => void;
 }
 
-function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
+export function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
   fetch("/api/test-get")
     .then((response) => response.json())
     .then((data) => console.log(data));
@@ -33,7 +33,6 @@ function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
 
   const currentComments = commentsByPost[post.title] || [];
 
-  const [showForm, setShowForm] = useState(false);
   const [commentText, setCommentText] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,79 +41,80 @@ function CommentPage({ commentsByPost, addComment }: CommentPageProps) {
 
     addComment(post.title, commentText.trim());
     setCommentText("");
-    setShowForm(false);
   };
 
   return (
     <>
-      <div className="container my-3" style={{ textDecoration: "underline" }}>
-        <h1>Comments</h1>
-      </div>
-
-      {/*This keeps the original topic at the top of the comments so that the user
-      remembers what they are are adding comments to.*/}
-      <div className="container my-3">
-        <div
-          className="card"
-          style={{ width: "18rem", border: "3px solid black" }}
-        >
-          <div className="card-body">
-            <h5 className="card-title">{post.title}</h5>
-            <p className="card-text">{post.body}</p>
-          </div>
-        </div>
-      </div>
-
-      {/*Dummy comments to show what the comment cards look like.*/}
-      {currentComments.map((text, index) => (
-        <div className="container my-3" key={index}>
-          <div
-            className="card"
-            style={{ width: "18rem", border: "3px solid black" }}
-          >
-            <div className="card-body">
-              <p className="card-text">{text}</p>
-            </div>
-          </div>
-        </div>
-      ))}
-
-      <div className="container my-4">
+      <div className="container my-5">
         <button
-          className="btn btn-primary w-100"
-          onClick={() => setShowForm((prev) => !prev)}
+          className="btn btn-link text-decoration-none text-muted ps-0 mb-4 d-flex align-items-center gap-2"
+          onClick={() => navigate("/Discussion")}
+          style={{ width: 'fit-content', fontWeight: '500' }}
         >
-          {showForm ? "Cancel" : "Make a Comment"}
+          <i className="bi bi-arrow-left"></i> Back to Community
         </button>
-      </div>
 
-      {/*Lets the user add comments under a specific discussion topic.*/}
-      {showForm && (
-        <div className="container my-3">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label
-                htmlFor="commentTextarea"
-                className="form-label"
-                style={{ fontWeight: "bold" }}
-              >
-                Your Comment
-              </label>
-              <textarea
-                id="commentTextarea"
-                className="form-control"
-                rows={3}
-                required
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-              />
+        <div className="row justify-content-center">
+          <div className="col-lg-8">
+            {/* Main Post */}
+            <div className="card shadow-sm border-0 mb-4">
+              <div className="card-body p-4">
+                <h2 className="card-title fw-bold text-primary mb-3">{post.title}</h2>
+                <p className="card-text lead" style={{ fontSize: '1.1rem', lineHeight: '1.7' }}>
+                  {post.body}
+                </p>
+                <div className="text-muted small border-top pt-3 mt-4">
+                  Original Post
+                </div>
+              </div>
             </div>
-            <button type="submit" className="btn btn-success">
-              Post Comment
-            </button>
-          </form>
+
+            {/* Comments Section */}
+            <h4 className="mb-4 fw-bold">Comments ({currentComments.length})</h4>
+
+            <div className="d-flex flex-column gap-3 mb-5">
+              {currentComments.length === 0 ? (
+                <div className="text-center text-muted py-5 bg-light rounded">
+                  No comments yet. Be the first to share your thoughts!
+                </div>
+              ) : (
+                currentComments.map((text, index) => (
+                  <div className="card border-0 bg-light" key={index}>
+                    <div className="card-body p-3">
+                      <p className="card-text mb-0">{text}</p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Comment Form */}
+            <div className="card shadow-sm border-0 bg-white">
+              <div className="card-body p-4">
+                <h5 className="card-title fw-bold mb-3">Leave a Comment</h5>
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <textarea
+                      className="form-control bg-light border-0"
+                      rows={3}
+                      placeholder="Type your response here..."
+                      required
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                      style={{ resize: 'none' }}
+                    />
+                  </div>
+                  <div className="d-flex justify-content-end">
+                    <button type="submit" className="btn btn-primary px-4">
+                      Post Comment
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </>
   );
 }

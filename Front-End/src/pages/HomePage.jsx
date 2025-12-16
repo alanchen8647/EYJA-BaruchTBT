@@ -6,9 +6,12 @@ import { getTextbookList } from "../api.jsx";
 
 
 export default function Homepage() {
+    //State variables for textbooks, search results, and loading status.
     const [textbooks, setTextbooks] = useState([]);
     const [searchResults, setSearchResults] = useState(textbooks);
     const [loading, setLoading] = useState(true);
+
+    //Fetches the list of textbooks from the backend when the component mounts.
     useEffect(() => {
         setLoading(true);
         try{
@@ -25,19 +28,44 @@ export default function Homepage() {
     }, []);
 
     return (
-        <>
-              {/* Dummy textbook card*/}
-              <div className="container my-5">
-                <img
-                  src={Textbooks1}
-                  className="img-fluid"
-                  alt="Pile of textbooks"
-                  style={{ height: "500px" }}
-                />
-              </div>
+        <div className="homepage-wrapper">
+            {/* Hero Section */}
+            <div className="hero-section text-center">
+                <div className="container">
+                    <h1 className="display-4 fw-bold mb-3">
+                        Find Your Textbooks <br /> For Less
+                    </h1>
+                    <p className="lead text-white-50 mb-4">
+                        The best place for Baruch students to buy and sell textbooks. 
+                        Save money and help your community.
+                    </p>
+                    
+                    {/* Integrated Search */}
+                    <div className="d-flex justify-content-center">
+                        <div className="w-75">
+                             <TextbookSearch textbooks={textbooks} setSearchResults={setSearchResults} />
+                        </div>
+                    </div>
 
-              <TextbookSearch textbooks={textbooks} setSearchResults={setSearchResults} />
-              <TextbookList textbooks={searchResults} />
-            </>
+                    <div className="mt-4 d-flex gap-3 justify-content-center">
+                        <a href="/sell" className="btn btn-outline-light btn-lg">Sell a Book</a>
+                    </div>
+                </div>
+            </div>
+
+            <div className="container" id="search">
+                {/* Removed redundant search container */}
+                
+                {loading ? (
+                    <div className="text-center py-5">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                ) : (
+                    <TextbookList textbooks={searchResults} />
+                )}
+            </div>
+        </div>
     );
 }

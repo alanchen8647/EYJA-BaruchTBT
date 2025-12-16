@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 import placeholderImage from "../../images/placeholder.jpg";
 
 export default function TextbookCard({ textbook }) {
-  console.log(textbook);
   const navigate = useNavigate();
-
+  //Renders a card displaying textbook information.
   return (
     <div className="col-md-3 mb-4">
       <div className="card" style={{ width: "18rem" }}>
@@ -21,13 +20,13 @@ export default function TextbookCard({ textbook }) {
           </h5>
           <h6 class="card-subtitle mb-2 text-muted">By {textbook.author}</h6>
           <h6 class="card-subtitle mb-2 text-muted">Sold by {textbook.profiles.user_name}</h6>
-          <p className="card-text" style={{ fontSize: "19px" }}>
+          <p className="card-text text-black" style={{ fontSize: "19px" }}>
             Course Number: {textbook.course_num}
           </p>
-          <p className="card-text" style={{ fontSize: "19px" }}>
+          <p className="card-text text-black" style={{ fontSize: "19px" }}>
             Condition: {textbook.condition}
           </p>
-          <p className="card-text" style={{ fontSize: "19px" }}>
+          <p className="card-text text-black" style={{ fontSize: "19px" }}>
             Price: ${textbook.price}
           </p>
           <div>
@@ -37,15 +36,6 @@ export default function TextbookCard({ textbook }) {
             >
               More information
             </Link>
-          </div>
-          <div>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => navigate("/TextbookInfo/" + textbook.id)}
-            >
-              Add to cart
-            </button>
           </div>
         </div>
       </div>

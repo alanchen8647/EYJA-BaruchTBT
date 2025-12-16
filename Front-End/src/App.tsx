@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   BrowserRouter,
   Routes,
   Route,
-  Link,
-  useNavigate,
 } from "react-router-dom";
 import Navbar from "./components/navbar.jsx";
 import HomePage from "./pages/HomePage.jsx";
 // import CartPage from "./CartPage.tsx";
 import SellPage from "./pages/SellPage.tsx";
-// import DiscussionPage from "./DiscussionPage.tsx";
+import DiscussionPage from "./DiscussionPage.tsx"
 import TextbookInfoPage from "./pages/TextbookInfoPage.tsx";
-// import CommentPage from "./CommentPage.tsx";
+import CommentPage from "./CommentPage.tsx";
 import ChatPage from "./pages/ChatPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 
@@ -27,16 +25,16 @@ import LoginPage from "./pages/LoginPage.tsx";
 function App() {
   // const [cartItems, setCartItems] = useState<Textbook[]>([]);
 
-//   const [commentsByPost, setCommentsByPost] = useState<CommentsByPost>({
-//     "Best textbook for studying art history?": [
-//       `I love seeing a person getting interested in art history! A good textbook that I 
-// recommend is "Gardner's Art Through the Ages by Helen Gardner". This book does a great 
-// job at describing different art forms and eras of art throughout history.`,
-//       `I hear that "Art: A Brief History by Marilyn Stokstad" is a pretty good textbook for 
-// getting a rough idea of art throughout history. You can probably find it on this site at 
-// a decent price.`,
-//     ],
-//   });
+  //   const [commentsByPost, setCommentsByPost] = useState<CommentsByPost>({
+  //     "Best textbook for studying art history?": [
+  //       `I love seeing a person getting interested in art history! A good textbook that I 
+  // recommend is "Gardner's Art Through the Ages by Helen Gardner". This book does a great 
+  // job at describing different art forms and eras of art throughout history.`,
+  //       `I hear that "Art: A Brief History by Marilyn Stokstad" is a pretty good textbook for 
+  // getting a rough idea of art throughout history. You can probably find it on this site at 
+  // a decent price.`,
+  //     ],
+  //   });
 
   //Lets users add textbooks to the cart.
   // const addTextbook = (newBook: Textbook) => {
@@ -94,7 +92,16 @@ function App() {
   //     "This book is a good refresher for important calculus concepts for a beginner-intermediate course. I mostly used the textbook for practice problems, so I barely touched it. The condition is used, but the actual condition is near pristine.",
   // };
   // const allTextbooks: Textbook[] = [staticTextbook, ...textbooks];
-  
+
+  const [commentsByPost, setCommentsByPost] = useState<{ [title: string]: string[] }>({});
+
+  // This function will be passed to CommentPage so it can add new comments
+  const addComment = (postTitle: string, comment: string) => {
+    setCommentsByPost((prev) => ({
+      ...prev,
+      [postTitle]: [...(prev[postTitle] || []), comment],
+    }));
+  };
 
   return (
     <BrowserRouter>
@@ -102,7 +109,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<HomePage/>}
+          element={<HomePage />}
         />
         {/*Routes to all the other pages in the website.*/}
         {/* <Route
@@ -116,14 +123,23 @@ function App() {
           }
         /> */}
         <Route path="/sell" element={<SellPage />} />
-        {/* <Route path="/Discussion" element={<DiscussionPage />} /> */}
+        <Route
+          path="/Discussion"
+          element={
+            <DiscussionPage
+              commentsByPost={commentsByPost}
+              addComment={addComment}
+            />
+          }
+        />
 
         <Route
           path="/TextbookInfo/:id"
           element={<TextbookInfoPage />}
         />
 
-        {/* <Route
+        {/* CommentPage route might be redundant now, but keeping for safety for a moment */}
+        <Route
           path="/Comment"
           element={
             <CommentPage
@@ -131,7 +147,7 @@ function App() {
               addComment={addComment}
             />
           }
-        /> */}
+        />
 
         <Route path="/Chat" element={<ChatPage />} />
 
