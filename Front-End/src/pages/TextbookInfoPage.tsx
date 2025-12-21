@@ -51,6 +51,9 @@ function TextbookInfoPage() {
       alert("Please log in to express interest in trading.");
       navigate("/login");
       return;
+    } else if (user.id === book?.seller_id) {
+      alert("You cannot express interest in your own textbook.");
+      return;
     }
     try {
       if (book) {

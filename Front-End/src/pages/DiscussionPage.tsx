@@ -1,38 +1,15 @@
 import { useState, useEffect } from "react";
 import { getCommunityPosts, createCommunityPost, getPostComment, createPostComment } from "../api.jsx";
 
-
 type Post = {
   id?: number;
   title: string;
   content: string;
 };
 
-
-
 export function DiscussionPage() {
   const [comments, setComments] = useState(null);
-  const [posts, setPosts] = useState<Post[]>([
-    {
-      id: 1,
-      title: "Best textbook for studying art history?",
-      content: `Hey guys, I'm currently taking an art history class where we go over art from 
-the Paleolithic era to the age of the Roman Empire. I already have a textbook, but I'm
-very interested in this topic and would like to study more about it on my personal time. 
-Does anyone know any textbooks sold on this website that's good for studying art history?`,
-    },
-    {
-      id: 2,
-      title:
-        'Anyone willing to trade an "Advanced Calculus Fundamentals of Mathematics by Carlos Polanco" textbook for a "calculus by Gilbert Strang" textbook?',
-      content: `So, I made a stupid mistake and bought "calculus by Gilbert Strang" for my advanced calculus class, 
-when I should have bought "Advanced Calculus Fundamentals of Mathematics by Carlos Polanco". I'm 
-not gonna lie, I really don't want to spend more money and wait for a new textbook. I know that this 
-sort of defeats the purpose of this website, but is anyone willing to trade their textbook for mine? 
-My textbook is still is mint condition and I'm available for a few days, so anyone who wants my textbook 
-can get it as soon as possible.`,
-    },
-  ]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newTopic, setNewTopic] = useState("");
@@ -56,6 +33,8 @@ can get it as soon as possible.`,
     }
     fetchComments();
   }, [selectedPost]);
+
+  //listen to 
 
   const handleCreatePost = (e: React.FormEvent) => {
     e.preventDefault();
