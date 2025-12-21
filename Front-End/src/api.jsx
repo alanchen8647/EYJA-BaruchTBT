@@ -4,7 +4,7 @@ import { supabase } from "./supabaseClient.js";
 // API utility functions for textbook operations
 const API = {
   // Base URL of the backend API
-  baseUrl: "http://localhost:3000/",}
+  baseUrl: "https://sci1bz2d6f.execute-api.us-west-2.amazonaws.com/",}
 
 // Fetch the list of textbooks from the backend
 export async function getTextbookList() {
@@ -190,4 +190,95 @@ export async function loadMessages(roomId) {
     }
     const data = await res.json();
     return data.messages;
+}
+
+export async function loaddeal(chatRoomId) {
+    const token = await supabase.auth.getSession().then(({data}) => data.session?.access_token);
+    const res = await fetch(`${API.baseUrl}trade/deal/${chatRoomId}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) {
+        throw new Error("Failed to load deal");
+    }
+    const data = await res.json();
+    return data.deal;
+}
+
+export async function confirmDeal(chatRoomId) {
+    const res = await fetch(`${API.baseUrl}trade/deal/confirm`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ chat_room_id: chatRoomId }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to confirm deal");
+    }
+    const data = await res.json();
+    return data;
+}
+
+export async function getCommunityPosts() {
+    const res = await fetch(`${API.baseUrl}community/`,{
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+        },
+    });
+    if (!res.ok) {
+        throw new Error("Failed to fetch community posts");
+    }
+    const data = await res.json();
+    return data.communities;
+}
+
+export async function createCommunityPost(title, content) {
+    const res = await fetch(`${API.baseUrl}community/`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify( title, content),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to create community post");
+    }
+    const data = await res.json();
+    return data.post;
+}
+
+export async function getPostComment(postId, content) {
+    const res = await fetch(`${API.baseUrl}community/${postId}/comments`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+        },
+    });
+    if (!res.ok) {
+        throw new Error("Failed to fetch post comments");
+    }
+    const data = await res.json();
+    return data.comments;
+} 
+
+export async function createPostComment(postId, content) {
+    const res = await fetch(`${API.baseUrl}community/${postId}/comments`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${await supabase.auth.getSession().then(({data}) => data.session?.access_token)}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to create post comment");
+    }
+    const data = await res.json();
+    return data.comment;
 }

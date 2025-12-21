@@ -86,7 +86,6 @@ function ChatPage() {
     reset();
     console.log("Current chatroom changed:", currentChatroom);
   }, [currentChatroom]);
-  console.log(chatrooms);
 
   if (authToken === null) {
     return <p>Token Expired Please log in again.</p>;

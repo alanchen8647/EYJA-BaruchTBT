@@ -6,7 +6,7 @@ const router = Router();
 // Get all textbooks
 router.get("/", async (req, res) => {
   try {
-    const { data, error } = await supabase.from("textbooks").select(`*,profiles(user_name)`).order('created_at', { ascending: false });
+    const { data, error } = await supabase.from("textbooks").select(`*,profiles(user_name)`).eq('status', 'available').order('created_at', { ascending: false });
     if (error) throw error; 
     res.json({ textbooks: data });
   } catch (error) {

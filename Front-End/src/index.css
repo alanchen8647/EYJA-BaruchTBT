@@ -15,10 +15,18 @@
     --primary-color: #6CACE4; /* Lighter blue for dark mode visibility */
     --secondary-color: #002C5F;
     --accent-color: #FFC72C;
-    --text-color: #e0e0e0;
+    --text-color: #ffffff;
     --bg-body: #121212;
     --bg-card: #1e1e1e;
     --border-color: #2d2d2d;
+  }
+
+  body, .card, .card-title, .card-subtitle, .card-text, h1, h2, h3, h4, h5, h6, p, span, div {
+     color: var(--text-color) !important;
+  }
+  
+  .text-primary, h1, h2, h3, h4, h5, h6 {
+     color: var(--primary-color) !important;
   }
 }
 
@@ -143,6 +151,39 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-color);
   border-color: var(--secondary-color);
   box-shadow: 0 0 0 0.25rem rgba(108, 172, 228, 0.25);
+}
+
+/* Theme Aware Backgrounds */
+.bg-panel {
+  background-color: #ffffff;
+}
+.bg-canvas {
+  background-color: #f8f9fa;
+}
+.bg-panel-subtle {
+  background-color: #e9ecef;
+}
+
+@media (prefers-color-scheme: dark) {
+  .bg-panel {
+    background-color: var(--bg-card) !important;
+  }
+  .bg-canvas {
+    background-color: var(--bg-body) !important;
+  }
+  .bg-panel-subtle {
+    background-color: #2d2d2d !important;
+  }
+  /* Fix borders in dark mode */
+  .border, .border-bottom, .border-end, .border-top, .border-start {
+    border-color: var(--border-color) !important;
+  }
+  
+  /* Fix placeholder text visibility */
+  input::placeholder, textarea::placeholder {
+    color: rgba(255, 255, 255, 0.65) !important;
+    opacity: 1;
+  }
 }
 
 /* Hero Section */
