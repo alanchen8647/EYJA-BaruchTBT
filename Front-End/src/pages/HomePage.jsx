@@ -2,6 +2,7 @@ import TextbookList from "../components/textbook_list.jsx";
 import TextbookSearch from "../components/textbook_search.jsx";
 import Textbooks1 from "../../images/textbooks1.jpg";
 import {useEffect, useState} from "react";
+import { Link } from "react-router-dom";
 import { getTextbookList } from "../api.jsx";
 
 
@@ -48,7 +49,7 @@ export default function Homepage() {
                     </div>
 
                     <div className="mt-4 d-flex gap-3 justify-content-center">
-                        <a href="/sell" className="btn btn-outline-light btn-lg">Sell a Book</a>
+                        <Link to="/sell" className="btn btn-outline-light btn-lg">Sell a Book</Link>
                     </div>
                 </div>
             </div>
