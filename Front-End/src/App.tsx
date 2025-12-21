@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -8,33 +8,16 @@ import Navbar from "./components/navbar.jsx";
 import HomePage from "./pages/HomePage.jsx";
 // import CartPage from "./CartPage.tsx";
 import SellPage from "./pages/SellPage.tsx";
-import DiscussionPage from "./DiscussionPage.tsx"
+import DiscussionPage from "./pages/DiscussionPage.tsx"
 import TextbookInfoPage from "./pages/TextbookInfoPage.tsx";
-import CommentPage from "./CommentPage.tsx";
 import ChatPage from "./pages/ChatPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
-
-
-// type CommentsByPost = {
-//   [title: string]: string[];
-// };
 
 //Allows users to search for a specific textbook with the help of a dynamic 
 //list that changes the closer the user is to a textbook's name.
 
 function App() {
   // const [cartItems, setCartItems] = useState<Textbook[]>([]);
-
-  //   const [commentsByPost, setCommentsByPost] = useState<CommentsByPost>({
-  //     "Best textbook for studying art history?": [
-  //       `I love seeing a person getting interested in art history! A good textbook that I 
-  // recommend is "Gardner's Art Through the Ages by Helen Gardner". This book does a great 
-  // job at describing different art forms and eras of art throughout history.`,
-  //       `I hear that "Art: A Brief History by Marilyn Stokstad" is a pretty good textbook for 
-  // getting a rough idea of art throughout history. You can probably find it on this site at 
-  // a decent price.`,
-  //     ],
-  //   });
 
   //Lets users add textbooks to the cart.
   // const addTextbook = (newBook: Textbook) => {
@@ -64,16 +47,7 @@ function App() {
   //   0
   // );
 
-  // const clearCart = () => {
   //   setCartItems([]);
-  // };
-
-  //Lets users add comments in the Comment page under a specific discussion.
-  // const addComment = (postTitle: string, comment: string) => {
-  //   setCommentsByPost((prev) => ({
-  //     ...prev,
-  //     [postTitle]: [...(prev[postTitle] || []), comment],
-  //   }));
   // };
 
   // Dummy textbook card used to show what the textbook cards look like.
@@ -92,16 +66,6 @@ function App() {
   //     "This book is a good refresher for important calculus concepts for a beginner-intermediate course. I mostly used the textbook for practice problems, so I barely touched it. The condition is used, but the actual condition is near pristine.",
   // };
   // const allTextbooks: Textbook[] = [staticTextbook, ...textbooks];
-
-  const [commentsByPost, setCommentsByPost] = useState<{ [title: string]: string[] }>({});
-
-  // This function will be passed to CommentPage so it can add new comments
-  const addComment = (postTitle: string, comment: string) => {
-    setCommentsByPost((prev) => ({
-      ...prev,
-      [postTitle]: [...(prev[postTitle] || []), comment],
-    }));
-  };
 
   return (
     <BrowserRouter>
@@ -130,15 +94,8 @@ function App() {
           element={<TextbookInfoPage />}
         />
 
-        <Route
-          path="/Comment"
-          element={
-            <CommentPage
-              commentsByPost={commentsByPost}
-              addComment={addComment}
-            />
-          }
-        />
+        {/* CommentPage route might be redundant now, but keeping for safety for a moment */}
+
 
         <Route path="/Chat" element={<ChatPage />} />
 

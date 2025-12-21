@@ -18,15 +18,15 @@ export default function TextbookCard({ textbook }) {
           <h5 className="card-title">
             {textbook.title}
           </h5>
-          <h6 class="card-subtitle mb-2 text-muted">By {textbook.author}</h6>
-          <h6 class="card-subtitle mb-2 text-muted">Sold by {textbook.profiles.user_name}</h6>
-          <p className="card-text text-black" style={{ fontSize: "19px" }}>
+          <h6 className="card-subtitle mb-2">By {textbook.author}</h6>
+          <h6 className="card-subtitle mb-2">Sold by {textbook.profiles.user_name}</h6>
+          <p className="card-text" style={{ fontSize: "19px" }}>
             Course Number: {textbook.course_num}
           </p>
-          <p className="card-text text-black" style={{ fontSize: "19px" }}>
+          <p className="card-text" style={{ fontSize: "19px" }}>
             Condition: {textbook.condition}
           </p>
-          <p className="card-text text-black" style={{ fontSize: "19px" }}>
+          <p className="card-text fw-bold text-primary" style={{ fontSize: "19px" }}>
             Price: ${textbook.price}
           </p>
           <div>

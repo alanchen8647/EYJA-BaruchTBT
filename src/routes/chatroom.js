@@ -3,6 +3,7 @@ import {supabase} from '../db.js';
 import {requireAuth} from '../middleware/auth.js';
 
 const router = Router();
+
 // Endpoint to get chat rooms for a user
 router.post("/", requireAuth, async (req, res) => {
     const user_id = req.user.id;
@@ -20,7 +21,6 @@ router.post("/", requireAuth, async (req, res) => {
                 textbook: textbooks (title, price, images_url),
                 status,
                 created_at,
-                deals(id, textbook_id),
                 last_message,
                 lm: messages!last_message (message, sender_id, created_at, id)
             `)

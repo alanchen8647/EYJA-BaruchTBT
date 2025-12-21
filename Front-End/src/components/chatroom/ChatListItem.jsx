@@ -6,7 +6,7 @@ import DeclinedTrade from "./DeclinedChat.jsx";
 export default function ChatListItem({ chatroom, setCurrentChatroom }) {
   return (<>
           {/* If chat is active, set the chat to clickable and on click open the chat window */}
-          {chatroom.status === 'active' ? (
+          {chatroom.status === 'active' || chatroom.status === 'completed' ? (
             <a onClick={() => setCurrentChatroom(chatroom)} style={{ cursor: "pointer", textDecoration: "none", color: "inherit" }}>
             <div className="list-group-item d-flex align-items-start bg-warning-subtle border border-warning rounded mb-2 p-3">
                 {chatroom.unread_count > 0 ? (
