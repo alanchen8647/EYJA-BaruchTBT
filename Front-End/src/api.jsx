@@ -4,7 +4,7 @@ import { supabase } from "./supabaseClient.js";
 // API utility functions for textbook operations
 const API = {
   // Base URL of the backend API
-  baseUrl: "http://localhost:3000/",}
+  baseUrl: "https://sci1bz2d6f.execute-api.us-west-2.amazonaws.com/",}
 
 // Fetch the list of textbooks from the backend
 export async function getTextbookList() {
