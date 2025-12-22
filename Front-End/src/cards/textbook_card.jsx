@@ -13,12 +13,13 @@ export default function TextbookCard({ textbook }) {
           src={textbook.images_url?.[0] || placeholderImage}
           className="card-img-top"
           alt={textbook.title}
+          height= "410"
         />
         <div className="card-body">
-          <h5 className="card-title">
+          <h5 className="card-title text-truncate">
             {textbook.title}
           </h5>
-          <h6 className="card-subtitle mb-2">By {textbook.author}</h6>
+          <h6 className="card-subtitle mb-2 text-truncate">By {textbook.author}</h6>
           <h6 className="card-subtitle mb-2">Sold by {textbook.profiles.user_name}</h6>
           <p className="card-text" style={{ fontSize: "19px" }}>
             Course Number: {textbook.course_num}
