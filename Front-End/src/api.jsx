@@ -3,8 +3,11 @@ import { supabase } from "./supabaseClient.js";
 
 // API utility functions for textbook operations
 const API = {
-  // Base URL of the backend API
-  baseUrl: "https://sci1bz2d6f.execute-api.us-west-2.amazonaws.com/",}
+  // Automatically switch between Local (Dev) and Cloud (Prod) URLs
+  baseUrl: import.meta.env.DEV 
+    ? "http://localhost:8000/" 
+    : "https://sci1bz2d6f.execute-api.us-west-2.amazonaws.com/",
+};
 
 // Fetch the list of textbooks from the backend
 export async function getTextbookList() {
